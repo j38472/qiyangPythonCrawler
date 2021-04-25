@@ -121,9 +121,13 @@ def getuniData(DHNuiList):
 
 
 """
-url 列表页   一级列表页 1  二级列表页 2
+url.py 列表页   一级列表页 1  二级列表页 2
 https://www.china.cn/search/0s06jo.shtml   1
       https://www.china.cn/search/skfstg.shtml    2
+      https://www.china.cn/search/ubi9.shtml
+
+      https://www.china.cn/search/fwlj6cj.shtml  可乐公司
+
 
 """
 if __name__ == '__main__':
