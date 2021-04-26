@@ -49,11 +49,22 @@ https://www.china.cn/relatedwords/yangroulei.html    ---- 羊肉类
 
 
 =================================================='''
+import datetime
 from urllib.parse import quote, unquote
+
+from fake_useragent import UserAgent
+from lxml import etree
+
+import requests
+from requests.adapters import HTTPAdapter
+
+import re
+
+from 中国供应商.run import myJDBC
 
 gjc = [
     # 肉类 后缀是肉
-    "牛肉", "羊肉", "兔肉", "猪肉", "鸡肉", "鸭肉", "驴肉", "鹅肉", "虾肉", "鱼肉", "羊肉", "羊肉", "羊肉","腊肉",
+    "牛肉", "羊肉", "兔肉", "猪肉", "鸡肉", "鸭肉", "驴肉", "鹅肉", "虾肉", "鱼肉", "羊肉", "羊肉", "羊肉", "腊肉",
 
     "海产", "水产", "海鲜", "农产", "海产", "海产", "海产",
     # 蛋类
@@ -65,15 +76,162 @@ gjc = [
     "调味", "香料",
 
     "食品添加剂"
-    ,"腌菜","酱菜","蔬菜","腌菜","腌菜"
+    , "腌菜", "酱菜", "蔬菜", "腌菜", "腌菜"
 
     # 饮品
-    ,"饮料","酱菜","腌菜","腌菜","腌菜"
+    , "饮料", "酱菜", "腌菜", "腌菜", "腌菜"
     # 食品机械
-    ,"饮料","酱菜","腌菜","腌菜","腌菜"
+    , "饮料", "酱菜", "腌菜", "腌菜", "腌菜"
 ]
+ua = UserAgent()
+
+
+def getHtmlData(url):
+    Headers = {
+        'content-type': 'application/json',
+        'User-Agent': ua.random,
+        'referer': 'https://www.china.cn/'
+    }
+
+    keep = True
+    maxtimes = 3
+    count = 0
+    print(datetime.datetime.now())
+    while keep and count < maxtimes:
+        try:
+            res = requests.head(url=url, headers=Headers, timeout=5)
+            keep = False
+            return requests.get(url, headers=Headers).text
+        except Exception as e:
+            print(datetime.datetime.now())
+            count = count + 1
+            print('重试' + str(count))
+
+
+
+def getData(url, cont):
+    print("当前URL为::  ", url)
+    cont += 1
+    response = getHtmlData(url)
+    # print(response)
+    selector = etree.HTML(response)
+    li_list = selector.xpath("//div[@class='yBanner']/div[@class='yBannerList']/div[@class='yKeyword']/a/@href")
+    print(len(li_list))
+    # # 获取所有下级页面链接
+    # for l in li_list:
+    #     print(l)
+
+    #    判断是不是有下一页
+    xpathNext = "//a[@class='rollPage']/@href"
+    next = selector.xpath(xpathNext)
+    # 如果再次只取到一个 下一页的链接  则判断下 该列表页的计数器 大于一的时候则退出该页面
+    if next:
+        if len(next) == 1 and cont > 1:
+            return
+        next = next[len(next) - 1]
+        print("计数器为:", cont)
+        myJDBC.insGJ(li_list, "search")
+
+        if next:
+            getData(next, cont)
+            print()
+
+
+"""
+生成列表页表单的链接
+"""
+
+
+def getListData(str):
+    nameList = myJDBC.getDataDb("relatedwords")
+    for n in nameList:
+        url = """https://www.china.cn/relatedwords/%s.html""" % (n[1])
+        print(url)
+
+
+"""
+获取所有的 relatedwords 后接子分类的 关键词 
+"""
+
+
+def getGJZList():
+    # 食品/饮料/餐饮生鲜 整个分类的全部
+    xpath = "//div[2]/div[15]/div/p/a/@onclick"
+
+    # 机床/机械设备 ---> 食品、饮料加工及餐饮行业设备
+    xpath1 = "//div[2]/div[3]/div[2]/p/a/@onclick"
+
+    # 机床/机械设备 ---> 农业机械
+    xpath2 = "//div[2]/div[3]/div[4]/p/a/@onclick"
+
+    # 化工 ----> 食品添加剂
+    xpath3 = "//div[2]/div[18]/div[2]/p/a/@onclick"
+
+    # 机床/机械设备 ---> 锅、炉及配件
+    xpath4 = "//div[2]/div[3]/div[21]/p/a/@onclick"
+
+    # 汽摩及配件/包装/能源 ---> 食品包装
+    xpath5 = "//div[2]/div[9]/div[23]/p/a/@onclick"
+
+    # 数码/安防/印刷/家电 ---> 厨房电器
+    xpath6 = "//div[2]/div[4]/div[49]/p/a/@onclick"
+    headers = {'User-Agent': ua.random}
+    url = "https://www.china.cn/relatedwords/"
+    response = requests.get(url, headers=headers).text
+    Selector = etree.HTML(response)
+    # 企业信息获取
+    li_list = Selector.xpath(xpath)
+    li_list1 = Selector.xpath(xpath1)
+    li_list2 = Selector.xpath(xpath2)
+    li_list3 = Selector.xpath(xpath3)
+    li_list4 = Selector.xpath(xpath4)
+    li_list5 = Selector.xpath(xpath5)
+    li_list6 = Selector.xpath(xpath6)
+    # print(len(li_list))
+    # print(len(li_list1))
+    # print(len(li_list2))
+    # print(len(li_list3))
+    # print(len(li_list4))
+    # print(len(li_list5))
+    # print(len(li_list6))
+
+    listAll = [li_list, li_list1, li_list2, li_list3, li_list4, li_list5, li_list6]
+    # 存储结果
+    listDataAll = []
+    i = 0
+    for list in listAll:
+        for data in list:
+            print(data)
+            rJ = re.search(r"'(.*?)'", data, flags=re.S).group(1)
+            print(rJ)
+            i += 1
+            print(i)
+            listDataAll.append(rJ)
+    print(len(listDataAll))
+    myJDBC.insGJ(listDataAll, "relatedwords")
+
+    # data.
+    # print(li_list)
+
+    # print(response.text)
+
+
 if __name__ == '__main__':
-    for g in gjc:
-        gquote = quote(g)
-        print(gquote)
-        print(unquote(gquote))
+    # getGJZList()
+
+    # getListData("cccc")
+
+    list = myJDBC.getDataDb("relatedwords")
+    for data in list:
+        if data[2]==None or data[2]==0:
+            url = """https://www.china.cn/relatedwords/%s.html"""%(data[1])
+            getData(url, 0)
+        myJDBC.updateIsOrNo("relatedwords",data[0])
+
+    # url = "https://www.china.cn/relatedwords/heicha.html?p=2"
+    # getData(url,0)
+
+    # for g in gjc:
+    #     gquote = quote(g)
+    #     print(gquote)
+    #     print(unquote(gquote))
