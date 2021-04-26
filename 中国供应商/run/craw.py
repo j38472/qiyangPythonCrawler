@@ -1,9 +1,16 @@
-"""
-爬虫代码
-python 写起来的感觉真的有点怪啊   单位内容太多了  几行代码包含的太多了.....
+'''=================================================
+@Project -> File   ：qiyangPythonCrawler -> craw
+@IDE    ：PyCharm
+@Author ：Mr. cyh
+@Date   ：2021/4/25 14:04
+@Desc   ：爬虫代码
+            python 写起来的感觉真的有点怪啊   单位内容太多了  几行代码包含的太多了.....
+            接收匹配出的base64  解密出 并生成对应的woff文件 和 xml 文件
+            匹配出页面中的电话号 当前页面的 unic  值  并进入当前页面生成的xml 文件中  获取对应的数值  用该数值和标准xml（ztkuBZ.xml） 字体库匹配数值
+            根据获取的电话号的unic值的顺序  输出电话号 和手机号
+            如此字体中国供应商 字体的反爬 突破成功
+================================================='''
 
-
-"""
 import base64
 import re
 from xml.dom.minidom import parse
@@ -12,13 +19,6 @@ import requests
 from fake_useragent import UserAgent
 from fontTools.ttLib import TTFont
 from lxml import etree
-
-"""
-接收匹配出的base64  解密出 并生成对应的woff文件 和 xml 文件
-匹配出页面中的电话号 当前页面的 unic  值  并进入当前页面生成的xml 文件中  获取对应的数值  用该数值和标准xml（ztkuBZ.xml） 字体库匹配数值  
-根据获取的电话号的unic值的顺序  输出电话号 和手机号 
-如此字体中国供应商 字体的反爬 突破成功
-"""
 
 
 def saveWoffXml(result):
@@ -36,8 +36,33 @@ def saveWoffXml(result):
 
 
 """
-解析xml 对比数据 
-获得真正的电话
+获取详情页面的电话号码的uni值 
+"""
+
+
+def getHTmlUni(response, strXpath):
+    # 替换一下  不然会乱码 而且 现在不替换 之后也需要处理的
+    response = response.replace("&#x", "uni")
+    # print(response)
+
+    # 获取本页面电话号的 unic码值
+    html = etree.HTML(response)
+    DH = ""
+
+    DH = html.xpath("//input[@id=\"phone_a\"][@type=\"hidden\"]/@value")[0]
+    DH = html.xpath("//input[@id=\"" + strXpath + "\"][@type=\"hidden\"]/@value")[0]
+    # DH = html.xpath("//div[@class=\"footer_txt\"]/p/span[@class=\"secret\"]/text()")
+    # print(DH)
+    DH = DH.split(";")
+    # for dh in DH:
+    #     print("adadasdsa     ", dh)
+    return DH
+
+
+"""
+解析xml 根据页面的uni拿到xmlz中的不变数据  对比数据 
+获得真正的电话或者手机号码
+并返回
 """
 
 
@@ -63,29 +88,6 @@ def getDh(dhDataList):
                 # print("数字为:", dhBz)
                 # print("data:", dataBz)
     return dh
-
-"""
-获取详情页面的电话号码的uni值 
-"""
-
-
-def getHTmlUni(response,strXpath):
-    # 替换一下  不然会乱码 而且 现在不替换 之后也需要处理的
-    response = response.replace("&#x", "uni")
-    # print(response)
-
-    # 获取本页面电话号的 unic码值
-    html = etree.HTML(response)
-    DH = ""
-
-    DH = html.xpath("//input[@id=\"phone_a\"][@type=\"hidden\"]/@value")[0]
-    DH = html.xpath("//input[@id=\""+strXpath+"\"][@type=\"hidden\"]/@value")[0]
-    # DH = html.xpath("//div[@class=\"footer_txt\"]/p/span[@class=\"secret\"]/text()")
-    # print(DH)
-    DH = DH.split(";")
-    # for dh in DH:
-    #     print("adadasdsa     ", dh)
-    return DH
 
 
 """
@@ -116,7 +118,7 @@ def getuniData(DHNuiList):
                 dhData.append(data)
                 # print("数字为:", dh)
                 # print("data:", data)
-    # 返回这个包含用于判断不表数据的数组
+    # 返回这个包含用于判断不变数据的数组
     return dhData
 
 
@@ -128,19 +130,26 @@ https://www.china.cn/search/0s06jo.shtml   1
 
       https://www.china.cn/search/fwlj6cj.shtml  可乐公司
 
+"""
 
 """
-if __name__ == '__main__':
+//待修改为  直接获取一个 详情页面的数据 而非URL  可以减少一次网络请求
+传来一个详情页的url  解析该详情页面  获取电话号和手机号
+"""
+
+
+def start(url):
     ua = UserAgent()
     headers = {'User-Agent': ua.random}
-    response = requests.get(url="https://www.china.cn/chuishishebei/4152876380.html", headers=headers).text
+    # "https://www.china.cn/chuishishebei/4152876380.html"
+    response = requests.get(url=url, headers=headers).text
     """ 获取base64 """
     result = re.search(r"base64,(.*?)\)", response, flags=re.S).group(1)
     # 生成当前页面的woff  和xml
     saveWoffXml(result)
     # 获取当前页的的 uni
-    DHNuiList = getHTmlUni(response,"phone_a")
-    SJNuiList = getHTmlUni(response,"mobile")
+    DHNuiList = getHTmlUni(response, "phone_a")
+    SJNuiList = getHTmlUni(response, "mobile")
     # 获取不变的重要数据
     dhDataList = getuniData(DHNuiList)
     sjDataList = getuniData(SJNuiList)
@@ -150,5 +159,8 @@ if __name__ == '__main__':
     print(sj)
 
 
+# 这个主要用于测试的
+if __name__ == '__main__':
+    start("https://www.china.cn/chuishishebei/4152876380.html");
     # for dh in DHlist:
     #     print(dh)
