@@ -20,18 +20,23 @@ from fake_useragent import UserAgent
 from fontTools.ttLib import TTFont
 from lxml import etree
 
+from 中国供应商.run.myRequests import getHtmlData
+
+nameWoff = "ztku.woff"
+nameXml = "ztku.xml"
+
 
 def saveWoffXml(result):
     """ 解密base64  """
     b64DeStr = base64.b64decode(result)
     # print(b64DeStr)
     """ 生成 woff 文件 """
-    with open("ztku.woff", "wb")as f:
+    with open(nameWoff, "wb")as f:
         f.write(b64DeStr)
     # 读取woff文件
-    fonts = TTFont("ztku.woff")
+    fonts = TTFont(nameWoff)
     # 生成xml文件
-    fonts.saveXML("ztku.xml")  # 保存成xml 文件
+    fonts.saveXML(nameXml)  # 保存成xml 文件
     pass
 
 
@@ -40,23 +45,41 @@ def saveWoffXml(result):
 """
 
 
-def getHTmlUni(response, strXpath):
+def getHTmlUni(response, isNo):
     # 替换一下  不然会乱码 而且 现在不替换 之后也需要处理的
     response = response.replace("&#x", "uni")
     # print(response)
 
     # 获取本页面电话号的 unic码值
     html = etree.HTML(response)
-    DH = ""
+    # print(html)
+    # 获取本页面电话 uni
+    # DhOrSj = set(re.findall(Re, response))
+    # r"'(.*?)'"
+    sjordh = ""
+    if isNo == 0:
+        sjOrDh = re.search(r"手机：(.*?)</span>", response, flags=re.S).group(1)
+    else:
+        sjOrDh = re.search(r"电话：(.*?)</span>", response, flags=re.S)
+        if sjOrDh:
+            sjOrDh = sjOrDh.group(1)
+        else:
+            parse
+    # print("---------------------------------------------")
+    # print(rJ)
+    # print()
 
-    DH = html.xpath("//input[@id=\"phone_a\"][@type=\"hidden\"]/@value")[0]
-    DH = html.xpath("//input[@id=\"" + strXpath + "\"][@type=\"hidden\"]/@value")[0]
-    # DH = html.xpath("//div[@class=\"footer_txt\"]/p/span[@class=\"secret\"]/text()")
+    # # DH = html.xpath("//input[@id=\"phone_a\"][@type=\"hidden\"]/@value")[0]
+    # xpathDh = "//input[@id=\"" + strXpath + "\"][@type=\"hidden\"]/@value"
+    # print(xpathDh)
+    # DH = html.xpath(xpathDh)
+    # # DH = html.xpath("//div[@class=\"footer_txt\"]/p/span[@class=\"secret\"]/text()")
     # print(DH)
-    DH = DH.split(";")
-    # for dh in DH:
+    if sjOrDh:
+        sjordh = sjOrDh.split(";")
+    # for dh in sjOrDh:
     #     print("adadasdsa     ", dh)
-    return DH
+    return sjordh
 
 
 """
@@ -82,7 +105,7 @@ def getDh(dhDataList):
             dataBz = customer.childNodes[0].data
             # 判断两个的字体长度是否一样  先要消除掉空格  如果一样长的话 就说明找到对应的手机号码了
             if len(dhData.replace(" ", "")) == len(dataBz.replace(" ", "")):
-                print("找到了啊啊啊啊啊 !!!!!!!!!!!!!")
+                # print("找到了啊啊啊啊啊 !!!!!!!!!!!!!")
                 dh += dhBz
                 # dh.append(dhBz)
                 # print("数字为:", dhBz)
@@ -96,7 +119,7 @@ def getDh(dhDataList):
 
 
 def getuniData(DHNuiList):
-    domTree = parse("ztku.xml")
+    domTree = parse(nameXml)
     # 文档根元素
     rootNode = domTree.documentElement
     # print(rootNode.nodeName)
@@ -123,44 +146,126 @@ def getuniData(DHNuiList):
 
 
 """
-url.py 列表页   一级列表页 1  二级列表页 2
-https://www.china.cn/search/0s06jo.shtml   1
-      https://www.china.cn/search/skfstg.shtml    2
-      https://www.china.cn/search/ubi9.shtml
-
-      https://www.china.cn/search/fwlj6cj.shtml  可乐公司
-
-"""
-
-"""
-//待修改为  直接获取一个 详情页面的数据 而非URL  可以减少一次网络请求
 传来一个详情页的url  解析该详情页面  获取电话号和手机号
 """
 
 
 def start(url):
-    ua = UserAgent()
-    headers = {'User-Agent': ua.random}
-    # "https://www.china.cn/chuishishebei/4152876380.html"
-    response = requests.get(url=url, headers=headers).text
+    dh = ""
+    sj = ""
+    response = getHtmlData(url)
+    # print(response)
+    dataXpaht = "//script[@type=\"text/javascript\"]/@data-gisjs"
+
+    xpathDz = "//div/div[2]/div[2]/p[1]/span[3]/text()"
+    xpathName1 = "//a[@class=\"company-name\"]/text()"
+    xpathName2 = "//a[@class=\"corpname\"]/text()"
+    xpathlxr = "//div[1]/div[2]/dl/dd[1]/div/span[1]/text()"
+    xpathZy1 = "//*[@id=\"signboard\"]/div[1]/div[1]/h2/text()"
+    xpathZy2 = "//div[@class=\"business\"]/text()"
+    selector = etree.HTML(response)
+    dzList = selector.xpath(xpathDz)
+    nameList = selector.xpath(xpathName1)
+    lxrList = selector.xpath(xpathlxr)
+    zyList = selector.xpath(xpathZy1)
+    if len(zyList) == 0:
+        zyList = selector.xpath(xpathZy2)
+    if len(nameList) == 0:
+        nameList = selector.xpath(xpathName2)\
+
+    if zyList:
+        zy = zyList[0]
+    if lxrList:
+        lxr = lxrList[0]
+    if nameList:
+        name = nameList[0]
+    # print(lxrList)
+    # print(len(lxrList))
+    # print(type(lxrList))
+
+
+
+    data = selector.xpath(dataXpaht)
+    # print(type(data))
+    # print(len(data))
+    data = data[0]
+    data = data.split(",")
+    for d1 in data:
+        # print(d1)
+        d2 = d1.split(":")
+        # print(d2[0])
+        if d2[0].find('address') > -1:
+            print("地址找到了")
+            dz = d2[1]
+            print(d2[1])
+
+
+    # print((dzList))
+    # print((nameList))
+    # print((lxrList))
+    # print((zyList))
+
+    # print(response)
     """ 获取base64 """
     result = re.search(r"base64,(.*?)\)", response, flags=re.S).group(1)
     # 生成当前页面的woff  和xml
     saveWoffXml(result)
     # 获取当前页的的 uni
-    DHNuiList = getHTmlUni(response, "phone_a")
-    SJNuiList = getHTmlUni(response, "mobile")
+    DHNuiList = getHTmlUni(response, 1)
+    SJNuiList = getHTmlUni(response, 0)
     # 获取不变的重要数据
-    dhDataList = getuniData(DHNuiList)
-    sjDataList = getuniData(SJNuiList)
-    dh = getDh(dhDataList)
-    sj = getDh(sjDataList)
-    print(dh)
-    print(sj)
+    # 获取对比 产出 号码
+    if DHNuiList:
+        dhDataList = getuniData(DHNuiList)
+        dh = getDh(dhDataList)
+    if SJNuiList:
+        sjDataList = getuniData(SJNuiList)
+        sj = getDh(sjDataList)
 
 
-# 这个主要用于测试的
+    print("name 公司名字  ",name)
+    print("lxr 联系人  ",lxr)
+    print("dh 电话  ",dh)
+    print("sj 手机  ",sj)
+    print("dz 地址  ",dz)
+    print("zy  主营  ",zy)
+
+
+# 这个主要用于测试的   {'http': 'http://183.155.109.40:59603'}
 if __name__ == '__main__':
-    start("https://www.china.cn/chuishishebei/4152876380.html");
+    print()
+    # # 获取列表页表中所有数据
+    # list_search = myJDBC.getDataDb("search")
+    # for search in list_search:
+    #
+    #     id = search[0]
+    #     url = search[1]
+    #     isOrNo = search[2]
+    #     print(id)
+    #     print(url)
+    #     print(isOrNo)
+    #     if isOrNo == 0:
+    #         start(url)
+    # #   每次执行完本列表页  则修改下数据
+    #     myJDBC.updateIsOrNo("search",id)
+    # https://jiushenjiuhang.cn.china.cn
+    # https://www.china.cn/hunningtujiaobanc/3747179508.html
+    # proxie = myIP.get_proxies()
+    """
+ https://yixinglqq.cn.china.cn/contact-information/     1
+ https://liaoningyixingjiuye.cn.china.cn/contact-information/   1
+ https://lihang123456.cn.china.cn/contact-information/  1
+ https://jiushenjiuhang.cn.china.cn/contact-information/    1
+ https://qq723786719.cn.china.cn/contact-information/   1
+ https://shengdaer.cn.china.cn/contact-information/     1
+    """
+
+    start("https://shengdaer.cn.china.cn/contact-information/")
+
     # for dh in DHlist:
     #     print(dh)
+"""
+列表页的  链接 有两种  加个判断
+普通的  直接去搞页码 去抓取数据   --  有可能会有页码 但是没有数据  所以需要加判断
+有分类的 判断下  一共多少数据   再去细分
+"""

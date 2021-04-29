@@ -62,6 +62,8 @@ import re
 
 from 中国供应商.run import myJDBC
 
+import myIP
+
 gjc = [
     # 肉类 后缀是肉
     "牛肉", "羊肉", "兔肉", "猪肉", "鸡肉", "鸭肉", "驴肉", "鹅肉", "虾肉", "鱼肉", "羊肉", "羊肉", "羊肉", "腊肉",
@@ -84,32 +86,30 @@ gjc = [
     , "饮料", "酱菜", "腌菜", "腌菜", "腌菜"
 ]
 ua = UserAgent()
-
-
+oRA = True
+proxies = []
 def getHtmlData(url):
-    Headers = {
-        'content-type': 'application/json',
-        'User-Agent': ua.random,
-        'referer': 'https://www.china.cn/'
-    }
-
-    keep = True
-    maxtimes = 3
-    count = 0
-    print(datetime.datetime.now())
-    while keep and count < maxtimes:
-        try:
-            res = requests.head(url=url, headers=Headers, timeout=5)
-            keep = False
-            return requests.get(url, headers=Headers).text
-        except Exception as e:
-            print(datetime.datetime.now())
-            count = count + 1
-            print('重试' + str(count))
-
+    global proxies
+    if len(proxies)== 0:
+        proxies.append(myIP.get_proxies())
+    proxie = proxies[0]
+    resp = requests.get(url=url, proxies=proxie)
+    code = resp.status_code
+    html = resp.text
+    cont = 0
+    if code == 520 and cont<5:
+        cont+=1
+        # 更新资源
+        myIP.rep_Ip()
+        proxies = []
+        proxies.append(myIP.get_proxies())
+        getHtmlData(url)
+    else:
+        return html
 
 
 def getData(url, cont):
+
     print("当前URL为::  ", url)
     cont += 1
     response = getHtmlData(url)
@@ -130,8 +130,7 @@ def getData(url, cont):
             return
         next = next[len(next) - 1]
         print("计数器为:", cont)
-        myJDBC.insGJ(li_list, "search")
-
+        # myJDBC.insGJ(li_list, "search")
         if next:
             getData(next, cont)
             print()
@@ -155,38 +154,42 @@ def getListData(str):
 
 
 def getGJZList():
-    # 食品/饮料/餐饮生鲜 整个分类的全部
+    # 食品/饮料/餐饮生鲜   整个分类的全部
     xpath = "//div[2]/div[15]/div/p/a/@onclick"
-
     # 机床/机械设备 ---> 食品、饮料加工及餐饮行业设备
     xpath1 = "//div[2]/div[3]/div[2]/p/a/@onclick"
-
     # 机床/机械设备 ---> 农业机械
     xpath2 = "//div[2]/div[3]/div[4]/p/a/@onclick"
-
-    # 化工 ----> 食品添加剂
-    xpath3 = "//div[2]/div[18]/div[2]/p/a/@onclick"
-
     # 机床/机械设备 ---> 锅、炉及配件
     xpath4 = "//div[2]/div[3]/div[21]/p/a/@onclick"
-
+    # 机床/机械设备 ---> 制冷设备
+    xpath4_2 = "//div[2]/div[3]/div[25]/p/a/@onclick"
+    # 数码/安防/印刷/家电 ---> 厨房电器
+    xpath6 = "//div[2]/div[4]/div[49]/p/a/@onclick"
+    # 化工 ----> 食品添加剂
+    xpath3 = "//div[2]/div[18]/div[2]/p/a/@onclick"
+    # 化工 ----> 香料、香精
+    xpath3_2 = "//div[2]/div[18]/div[20]/p/a/@onclick"
     # 汽摩及配件/包装/能源 ---> 食品包装
     xpath5 = "//div[2]/div[9]/div[23]/p/a/@onclick"
 
-    # 数码/安防/印刷/家电 ---> 厨房电器
-    xpath6 = "//div[2]/div[4]/div[49]/p/a/@onclick"
+
+
+
+
     headers = {'User-Agent': ua.random}
     url = "https://www.china.cn/relatedwords/"
     response = requests.get(url, headers=headers).text
     Selector = etree.HTML(response)
     # 企业信息获取
-    li_list = Selector.xpath(xpath)
-    li_list1 = Selector.xpath(xpath1)
-    li_list2 = Selector.xpath(xpath2)
-    li_list3 = Selector.xpath(xpath3)
-    li_list4 = Selector.xpath(xpath4)
-    li_list5 = Selector.xpath(xpath5)
-    li_list6 = Selector.xpath(xpath6)
+    li_list = Selector.xpath(xpath3_2)
+    li_list1 = Selector.xpath(xpath4_2)
+    # li_list2 = Selector.xpath(xpath2)
+    # li_list3 = Selector.xpath(xpath3)
+    # li_list4 = Selector.xpath(xpath4)
+    # li_list5 = Selector.xpath(xpath5)
+    # li_list6 = Selector.xpath(xpath6)
+
     # print(len(li_list))
     # print(len(li_list1))
     # print(len(li_list2))
@@ -195,7 +198,7 @@ def getGJZList():
     # print(len(li_list5))
     # print(len(li_list6))
 
-    listAll = [li_list, li_list1, li_list2, li_list3, li_list4, li_list5, li_list6]
+    listAll = [li_list, li_list1]
     # 存储结果
     listDataAll = []
     i = 0
@@ -208,7 +211,7 @@ def getGJZList():
             print(i)
             listDataAll.append(rJ)
     print(len(listDataAll))
-    myJDBC.insGJ(listDataAll, "relatedwords")
+    # myJDBC.insGJ(listDataAll, "relatedwords")
 
     # data.
     # print(li_list)
@@ -217,18 +220,20 @@ def getGJZList():
 
 
 if __name__ == '__main__':
-    # getGJZList()
+    getGJZList()
 
+
+    # https://www.china.cn/relatedwords/zhiwuyou.html?p=2
     # getListData("cccc")
 
     list = myJDBC.getDataDb("relatedwords")
     for data in list:
-        if data[2]==None or data[2]==0:
-            url = """https://www.china.cn/relatedwords/%s.html"""%(data[1])
+        # if data[2]==None or data[2]==0:
+            url = """http://www.china.cn/relatedwords/%s.html"""%(data[1])
             getData(url, 0)
-        myJDBC.updateIsOrNo("relatedwords",data[0])
+        # myJDBC.updateIsOrNo("relatedwords",data[0])
 
-    # url = "https://www.china.cn/relatedwords/heicha.html?p=2"
+    # url = "https://www.china.cn/relatedwords/niu.html?p=3"
     # getData(url,0)
 
     # for g in gjc:

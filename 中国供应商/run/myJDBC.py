@@ -19,6 +19,21 @@ conn = pymysql.connect(
 )
 cursor = conn.cursor()
 
+
+"""
+ip存储库
+"""
+def inProxyMeta(proxyMeta):
+    sql = """ INSERT INTO proxies (url) VALUES('%s')
+                            """ % (proxyMeta)
+    cursor.execute(sql)
+    conn.commit()
+def getSqlProxyMeta():
+    sql = " select url from proxies order by id DESC limit 1;"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    return results
+
 """
 获取tableName 表 的所有
 并形成二维数组 返回
@@ -98,6 +113,8 @@ def updateIsOrNo(tableDb,id):
 # except:
 # 发生错误就回滚数据
 # conn.rollback()
+
+
 
 
 if __name__ == '__main__':
