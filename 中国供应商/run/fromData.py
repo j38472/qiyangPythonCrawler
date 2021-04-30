@@ -222,6 +222,8 @@ def getGJZList():
 if __name__ == '__main__':
     getGJZList()
 
+    # 注意了  了了了了了了  这个还没有判断其价值  不清楚内部详情页 和列表页的价值 待确定
+    LBURL = "https://www.china.cn/category/shipin.html"
 
     # https://www.china.cn/relatedwords/zhiwuyou.html?p=2
     # getListData("cccc")

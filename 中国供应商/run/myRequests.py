@@ -27,24 +27,28 @@ header = {
     'User-Agent': ua.random
 }
 def getHtmlData(url):
-    pmeta = myJDBC.getSqlProxyMeta()
-    pmeta[0][0]
-    proxyMeta = pmeta[0][0]
-    # print(proxyMeta)
-    proxies = {
-        "http": proxyMeta,
-    }
-    sleep(3)
-    print(proxies)
-    # {'http': 'http://183.155.111.253:46264'}
-    # , proxies=proxies
-    resp = requests.get(url=url, proxies=proxies)
+    # pmeta = myJDBC.getSqlProxyMeta()
+    # pmeta[0][0]
+    # proxyMeta = pmeta[0][0]
+    # # print(proxyMeta)
+    # proxies = {
+    #     "http": proxyMeta,
+    # }
+    # print(proxies)
+    # # {'http': 'http://183.155.111.253:46264'}
+    # # , proxies=proxies
+    # resp = requests.get(url=url, proxies=proxies)
+    print("当前页面的URL  ",url)
+    proxies = {"http": None, "https": None}
+    resp = requests.get(url=url,proxies=proxies)
     resp.encoding = 'gbk'
     code = resp.status_code
     html = resp.text
     # print("html::",html)
     cont = 0
     print("状态码为:: ", code)
+
+    sleep(3)
     if code == 520 and cont < 5:
         print("封IP了啊啊啊啊啊啊")
         cont += 1

@@ -13,6 +13,7 @@
 
 import base64
 import re
+import time
 from xml.dom.minidom import parse
 
 import requests
@@ -58,13 +59,13 @@ def getHTmlUni(response, isNo):
     # r"'(.*?)'"
     sjordh = ""
     if isNo == 0:
-        sjOrDh = re.search(r"手机：(.*?)</span>", response, flags=re.S).group(1)
+        sjOrDh = re.search(r"手机：(.*?)</span>", response, flags=re.S)
+        if sjOrDh:
+            sjOrDh = sjOrDh.group(1)
     else:
         sjOrDh = re.search(r"电话：(.*?)</span>", response, flags=re.S)
         if sjOrDh:
             sjOrDh = sjOrDh.group(1)
-        else:
-            parse
     # print("---------------------------------------------")
     # print(rJ)
     # print()
@@ -153,6 +154,10 @@ def getuniData(DHNuiList):
 def start(url):
     dh = ""
     sj = ""
+    name = ""
+    lxr = ""
+    dz = ""
+    zy = ""
     response = getHtmlData(url)
     # print(response)
     dataXpaht = "//script[@type=\"text/javascript\"]/@data-gisjs"
@@ -173,6 +178,7 @@ def start(url):
     if len(nameList) == 0:
         nameList = selector.xpath(xpathName2)\
 
+
     if zyList:
         zy = zyList[0]
     if lxrList:
@@ -188,16 +194,17 @@ def start(url):
     data = selector.xpath(dataXpaht)
     # print(type(data))
     # print(len(data))
-    data = data[0]
-    data = data.split(",")
-    for d1 in data:
-        # print(d1)
-        d2 = d1.split(":")
-        # print(d2[0])
-        if d2[0].find('address') > -1:
-            print("地址找到了")
-            dz = d2[1]
-            print(d2[1])
+    if data:
+        data = data[0]
+        data = data.split(",")
+        for d1 in data:
+            # print(d1)
+            d2 = d1.split(":")
+            # print(d2[0])
+            if d2[0].find('address') > -1:
+                print("地址找到了")
+                dz = d2[1]
+                print(d2[1])
 
 
     # print((dzList))
@@ -207,21 +214,27 @@ def start(url):
 
     # print(response)
     """ 获取base64 """
-    result = re.search(r"base64,(.*?)\)", response, flags=re.S).group(1)
-    # 生成当前页面的woff  和xml
-    saveWoffXml(result)
-    # 获取当前页的的 uni
-    DHNuiList = getHTmlUni(response, 1)
-    SJNuiList = getHTmlUni(response, 0)
-    # 获取不变的重要数据
-    # 获取对比 产出 号码
-    if DHNuiList:
-        dhDataList = getuniData(DHNuiList)
-        dh = getDh(dhDataList)
-    if SJNuiList:
-        sjDataList = getuniData(SJNuiList)
-        sj = getDh(sjDataList)
+    result = re.search(r"base64,(.*?)\)", response, flags=re.S)
+    # 有些页面他就没有 数字 所以也叫没有  字体库
+    if result:
+        result = result.group(1)
+        # 生成当前页面的woff  和xml
+        saveWoffXml(result)
+        # 获取当前页的的 uni
+        DHNuiList = getHTmlUni(response, 1)
+        SJNuiList = getHTmlUni(response, 0)
+        # 获取不变的重要数据
+        # 获取对比 产出 号码
+        if DHNuiList:
+            dhDataList = getuniData(DHNuiList)
+            dh = getDh(dhDataList)
+        if SJNuiList:
+            sjDataList = getuniData(SJNuiList)
+            sj = getDh(sjDataList)
 
+    print("--------------------------------------------------------------")
+    # 现在的速度是 5秒左右 一个解析出一条数据  还行.....
+    print(time.strftime("%Y-%m-%d %H:%M:%S",time.localtime()))
 
     print("name 公司名字  ",name)
     print("lxr 联系人  ",lxr)
@@ -229,6 +242,7 @@ def start(url):
     print("sj 手机  ",sj)
     print("dz 地址  ",dz)
     print("zy  主营  ",zy)
+    print("--------------------------------------------------------------")
 
 
 # 这个主要用于测试的   {'http': 'http://183.155.109.40:59603'}
