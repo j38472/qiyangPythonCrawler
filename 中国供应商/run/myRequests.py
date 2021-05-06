@@ -27,27 +27,31 @@ header = {
     'User-Agent': ua.random
 }
 def getHtmlData(url):
-    # pmeta = myJDBC.getSqlProxyMeta()
-    # pmeta[0][0]
-    # proxyMeta = pmeta[0][0]
-    # # print(proxyMeta)
-    # proxies = {
-    #     "http": proxyMeta,
-    # }
-    # print(proxies)
-    # # {'http': 'http://183.155.111.253:46264'}
-    # # , proxies=proxies
-    # resp = requests.get(url=url, proxies=proxies)
     print("当前页面的URL  ",url)
-    proxies = {"http": None, "https": None}
-    resp = requests.get(url=url,proxies=proxies)
+
+
+    pmeta = myJDBC.getSqlProxyMeta()
+    pmeta[0][0]
+    proxyMeta = pmeta[0][0]
+    # print(proxyMeta)
+    proxies = {
+        "http": proxyMeta,
+    }
+    print(proxies)
+    # {'http': 'http://183.155.111.253:46264'}
+    # , proxies=proxies
+    resp = requests.get(url=url, proxies=proxies)
+
+    # proxies = {"http": None, "https": None}
+    # resp = requests.get(url=url,proxies=proxies)
+
     resp.encoding = 'gbk'
     code = resp.status_code
     html = resp.text
     # print("html::",html)
     cont = 0
     print("状态码为:: ", code)
-
+    # print(html)
     sleep(3)
     if code == 520 and cont < 5:
         print("封IP了啊啊啊啊啊啊")
@@ -66,7 +70,7 @@ def getIPIS(url):
     proxyHost = data["IP"]  # ip地址
     proxyPort = data["port"]  # 端口号
 
-    proxyMeta = "http://%(host)s:%(port)s" % {
+    proxyMeta = "%(host)s:%(port)s" % {
         "host": proxyHost,
         "port": proxyPort,
     }
@@ -78,15 +82,18 @@ def getIPIS(url):
     # }
 
     proxies = {
-        "http": proxyMeta,
+        'http': 'http://' + proxyMeta,
+        'https': 'https://' + proxyMeta,
     }
     print(proxies)
-    # resp = requests.get(url, proxies=proxies)
-    resp = requests.get(url)
+    resp = requests.get(url, proxies=proxies)
+    # resp = requests.get(url)
+    print("-------------------------")
     print(resp.status_code)
     print(resp.text)
 
 if __name__ == '__main__':
     # myIP.rep_Ip()
     url = "http://httpbin.org/ip"
-    getIPIS(url)
+    # getHtmlData(url)
+    getHtmlData(url)

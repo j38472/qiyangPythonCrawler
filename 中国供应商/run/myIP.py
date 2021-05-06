@@ -77,11 +77,11 @@ def get_proxies():
 
 if __name__ == '__main__':
     # rel_Ip()
-    get_Ip()
+    # get_Ip()
     get_proxies()
-
-    pmeta = myJDBC.getSqlProxyMeta()
-    pmeta[0][0]
+    #
+    # pmeta = myJDBC.getSqlProxyMeta()
+    # pmeta[0][0]
 
 
     # re = requests.get(url="http://proxy.qg.net/query?Key=F58B5B03A518E080").text
