@@ -21,6 +21,7 @@ from fake_useragent import UserAgent
 from fontTools.ttLib import TTFont
 from lxml import etree
 
+from 中国供应商.run import myJDBC, myIP
 from 中国供应商.run.myRequests import getHtmlData
 
 nameWoff = "ztku.woff"
@@ -159,91 +160,100 @@ def start(url):
     dz = ""
     zy = ""
     response = getHtmlData(url)
-    # print(response)
-    dataXpaht = "//script[@type=\"text/javascript\"]/@data-gisjs"
+    if response != 404:
+        # print(response)
+        dataXpaht = "//script[@type=\"text/javascript\"]/@data-gisjs"
 
-    xpathDz = "//div/div[2]/div[2]/p[1]/span[3]/text()"
-    xpathName1 = "//a[@class=\"company-name\"]/text()"
-    xpathName2 = "//a[@class=\"corpname\"]/text()"
-    xpathlxr = "//div[1]/div[2]/dl/dd[1]/div/span[1]/text()"
-    xpathZy1 = "//*[@id=\"signboard\"]/div[1]/div[1]/h2/text()"
-    xpathZy2 = "//div[@class=\"business\"]/text()"
-    selector = etree.HTML(response)
-    dzList = selector.xpath(xpathDz)
-    nameList = selector.xpath(xpathName1)
-    lxrList = selector.xpath(xpathlxr)
-    zyList = selector.xpath(xpathZy1)
-    if len(zyList) == 0:
-        zyList = selector.xpath(xpathZy2)
-    if len(nameList) == 0:
-        nameList = selector.xpath(xpathName2)\
-
-
-    if zyList:
-        zy = zyList[0]
-    if lxrList:
-        lxr = lxrList[0]
-    if nameList:
-        name = nameList[0]
-    # print(lxrList)
-    # print(len(lxrList))
-    # print(type(lxrList))
+        xpathDz = "//div/div[2]/div[2]/p[1]/span[3]/text()"
+        xpathName1 = "//a[@class=\"company-name\"]/text()"
+        xpathName2 = "//a[@class=\"corpname\"]/text()"
+        xpathlxr = "//div[1]/div[2]/dl/dd[1]/div/span[1]/text()"
+        xpathZy1 = "//*[@id=\"signboard\"]/div[1]/div[1]/h2/text()"
+        xpathZy2 = "//div[@class=\"business\"]/text()"
+        selector = etree.HTML(response.encode('gbk'))
+        dzList = selector.xpath(xpathDz)
+        nameList = selector.xpath(xpathName1)
+        lxrList = selector.xpath(xpathlxr)
+        zyList = selector.xpath(xpathZy1)
+        if len(zyList) == 0:
+            zyList = selector.xpath(xpathZy2)
+        if len(nameList) == 0:
+            nameList = selector.xpath(xpathName2)\
 
 
-
-    data = selector.xpath(dataXpaht)
-    # print(type(data))
-    # print(len(data))
-    if data:
-        data = data[0]
-        data = data.split(",")
-        for d1 in data:
-            # print(d1)
-            d2 = d1.split(":")
-            # print(d2[0])
-            if d2[0].find('address') > -1:
-                print("地址找到了")
-                dz = d2[1]
-                print(d2[1])
+        if zyList:
+            zy = zyList[0]
+        if lxrList:
+            lxr = lxrList[0]
+        if nameList:
+            name = nameList[0]
+        # print(lxrList)
+        # print(len(lxrList))
+        # print(type(lxrList))
 
 
-    # print((dzList))
-    # print((nameList))
-    # print((lxrList))
-    # print((zyList))
 
-    # print(response)
-    """ 获取base64 """
-    result = re.search(r"base64,(.*?)\)", response, flags=re.S)
-    # 有些页面他就没有 数字 所以也叫没有  字体库
-    if result:
-        result = result.group(1)
-        # 生成当前页面的woff  和xml
-        saveWoffXml(result)
-        # 获取当前页的的 uni
-        DHNuiList = getHTmlUni(response, 1)
-        SJNuiList = getHTmlUni(response, 0)
-        # 获取不变的重要数据
-        # 获取对比 产出 号码
-        if DHNuiList:
-            dhDataList = getuniData(DHNuiList)
-            dh = getDh(dhDataList)
-        if SJNuiList:
-            sjDataList = getuniData(SJNuiList)
-            sj = getDh(sjDataList)
+        data = selector.xpath(dataXpaht)
+        # print(type(data))
+        # print(len(data))
+        if data:
+            data = data[0]
+            data = data.split(",")
+            for d1 in data:
+                # print(d1)
+                d2 = d1.split(":")
+                # print(d2[0])
+                if d2[0].find('address') > -1:
+                    # print("地址找到了")
+                    dz = d2[1]
+                    print(d2[1])
 
-    print("--------------------------------------------------------------")
-    # 现在的速度是 5秒左右 一个解析出一条数据  还行.....
-    print(time.strftime("%Y-%m-%d %H:%M:%S",time.localtime()))
 
-    print("name 公司名字  ",name)
-    print("lxr 联系人  ",lxr)
-    print("dh 电话  ",dh)
-    print("sj 手机  ",sj)
-    print("dz 地址  ",dz)
-    print("zy  主营  ",zy)
-    print("--------------------------------------------------------------")
+        # print((dzList))
+        # print((nameList))
+        # print((lxrList))
+        # print((zyList))
 
+        # print(response)
+        """ 获取base64 """
+        result = re.search(r"base64,(.*?)\)", response, flags=re.S)
+        # 有些页面他就没有 数字 所以也叫没有  字体库
+        if result:
+            result = result.group(1)
+            # 生成当前页面的woff  和xml
+            saveWoffXml(result)
+            # 获取当前页的的 uni
+            DHNuiList = getHTmlUni(response, 1)
+            SJNuiList = getHTmlUni(response, 0)
+            # 获取不变的重要数据
+            # 获取对比 产出 号码
+            if DHNuiList:
+                dhDataList = getuniData(DHNuiList)
+                dh = getDh(dhDataList)
+            if SJNuiList:
+                sjDataList = getuniData(SJNuiList)
+                sj = getDh(sjDataList)
+
+        print("--------------------------------------------------------------")
+        name = name.replace("'","")
+        dz = dz.replace("'","")
+        zy = zy.replace("'","")
+        lxr = lxr.replace("'","")
+        # 现在的速度是 5秒左右 一个解析出一条数据  还行.....
+        print(time.strftime("%Y-%m-%d %H:%M:%S",time.localtime()))
+
+        print("name 公司名字  ",name)
+        print("lxr 联系人  ",lxr)
+        print("dh 电话  ",dh)
+        print("sj 手机  ",sj)
+        print("dz 地址  ",dz)
+        print("zy  主营  ",zy)
+        print("--------------------------------------------------------------")
+        myJDBC.addDate(dataDb="cn_china_cn",name=name,lxr=lxr,dh=dh,sj=sj,zy=zy,dz=dz,url=url)
+        if name == "" and lxr == "" and dh == "" and sj == "" and dz == "" and zy == "":
+            print("全都是空，更换ip")
+            myIP.rep_Ip()
+            myIP.get_proxies()
 
 # 这个主要用于测试的   {'http': 'http://183.155.109.40:59603'}
 if __name__ == '__main__':
@@ -265,16 +275,9 @@ if __name__ == '__main__':
     # https://jiushenjiuhang.cn.china.cn
     # https://www.china.cn/hunningtujiaobanc/3747179508.html
     # proxie = myIP.get_proxies()
-    """
- https://yixinglqq.cn.china.cn/contact-information/     1
- https://liaoningyixingjiuye.cn.china.cn/contact-information/   1
- https://lihang123456.cn.china.cn/contact-information/  1
- https://jiushenjiuhang.cn.china.cn/contact-information/    1
- https://qq723786719.cn.china.cn/contact-information/   1
- https://shengdaer.cn.china.cn/contact-information/     1
-    """
 
-    start("https://shengdaer.cn.china.cn/contact-information/")
+
+    start("https://shop1368412296764.cn.china.cn/contact-information/")
 
     # for dh in DHlist:
     #     print(dh)

@@ -7,13 +7,14 @@
 @Date   ：2021/4/26 9:16
 @Desc   ：各种对数据库的操作
 =================================================='''
+import time
 
 import pymysql
 
 conn = pymysql.connect(
     host="localhost",
     port=3306,
-    db="qiyangdata",
+    db="qiyang",
     user="root",
     password="root",
 )
@@ -102,10 +103,12 @@ def insDataAll(data):
 修改isOrNo为1 表示其已经处理过了
 """
 def updateIsOrNo(tableDb,id):
+    A = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    A = '"'+ A +'"'
     sql = """
-    UPDATE %s SET isOrNo=1 WHERE id = %s
-    """%(tableDb,id)
-    # print(sql)
+    UPDATE %s SET isOrNo=2,shiJian = %s WHERE id = %s
+    """%(tableDb,A,id)
+    print(sql)
     cursor.execute(sql)
     conn.commit()
     return None
@@ -115,10 +118,22 @@ def updateIsOrNo(tableDb,id):
 # conn.rollback()
 
 
-
+"""
+存入详情页的数据
+"""
+def addDate(dataDb,name,url,zy,lxr,dh,sj,dz):
+    A = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    A = '"' + A + '"'
+    sql = """
+    INSERT INTO %s (Name,Url,Zy,LXR,DH,SJ,DZ,shiJian)VALUES('%s','%s','%s','%s','%s','%s','%s','%s');
+    """%(dataDb,name,url,zy,lxr,dh,sj,dz,A)
+    cursor.execute(sql)
+    conn.commit()
+    print("sql::::   ",sql)
+    print("已存入数据！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！")
 
 if __name__ == '__main__':
-    getDataDb("relatedwords")
+    updateIsOrNo("search",1)
     # cursor.execute("SELECT Name,Url FROM ziyouname WHERE id<50;")
     # for data in cursor.fetchall():
     #     insDataAll(data)

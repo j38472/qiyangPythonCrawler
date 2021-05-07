@@ -21,28 +21,31 @@ rep_IP = "http://proxy.qg.net/replace?Key=F58B5B03A518E080"
 # 资源查询
 que_IP = "http://proxy.qg.net/query?Key=F58B5B03A518E080"
 
-
+proxiesNone = {
+    # 根据请求方式（http/https）的不同，可以选择不同的代理
+    "http": None,
+    "https": None
+}
 # 资源申请
 def get_Ip():
-    req = requests.get(url=get_IP)
-    print(req)
+    requests.get(url=get_IP,proxies=proxiesNone)
 
 
 # 资源释放
-def rel_Ip():
-    req = requests.get(url=rel_IP)
-    print(req)
+def rel_Ip(sf_ip):
+    url = 'https://proxy.qg.net/release?Key=F58B5B03A518E080&IP=' + sf_ip
+    requests.post(url=url,proxies=proxiesNone)
 
 
 # 资源更换
 def rep_Ip():
     print("更换代理IP了!!!!!!")
-    re = requests.get(url=rep_IP).text
+    re = requests.get(url=rep_IP,proxies=proxiesNone).text
 
 
 # 资源查询
 def que_Ip():
-    re = requests.get(url=que_IP).text
+    re = requests.get(url=que_IP,proxies=proxiesNone).text
     print("资源查询 ",re)
     reJson = json.loads(re)
     if reJson["TaskList"]:
@@ -76,8 +79,7 @@ def get_proxies():
 
 
 if __name__ == '__main__':
-    # rel_Ip()
-    # get_Ip()
+    rep_Ip()
     get_proxies()
     #
     # pmeta = myJDBC.getSqlProxyMeta()

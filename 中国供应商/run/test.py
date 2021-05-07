@@ -13,6 +13,9 @@ import requests
 
 import hashlib
 import base64
+
+from 中国供应商.run.myJDBC import updateIsOrNo
+
 """""
 
 (this['$store']['state']['url']['index']
@@ -44,12 +47,46 @@ def getToken():
     print(bs64)
     return bs64
 
+def cs(i):
+    if i == 1:
+        i+=1
+        print(i)
+
+        cs(i)
+
+    else:
+        return i
+def recursion(n):
+    v = n//2 # 地板除，保留整数
+    # print(v) # 每次求商，输出商的值
+    if v>2:
+        ''' 当商为0时，停止，返回Done'''
+        recursion(v)
+    else:
+        return v
+    v = recursion(v)
+
+def sum_recu(n):
+    cent = 0
+    if n==520:
+        n=50
+        sum_recu(n)
+    return n
 if __name__ == '__main__':
-    url = "https://spa10.scrape.center/"
-    page = requests.get(url=url)
-    page.encoding = "utf-8"
-    html = page.text
-    print(html)
+    updateIsOrNo("search",1)
+    # print("main",sum_recu(520))
+
+    # requests.get(url="https://proxy.qg.net/replace?Key=F58B5B03A518E080")
+    # dz = "' '山东 潍坊 诸城市 密州街道普乐工业园''"
+    # dz = dz.replace("'","")
+    # print(dz)
+
+
+    # url = "https://spa10.scrape.center/"
+    # page = requests.get(url=url)
+    # page.encoding = "utf-8"
+    # html = page.text
+    # print(html)
 
 
 

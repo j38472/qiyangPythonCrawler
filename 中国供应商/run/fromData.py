@@ -62,7 +62,7 @@ import re
 
 from 中国供应商.run import myJDBC
 
-import myIP
+import myip
 
 gjc = [
     # 肉类 后缀是肉
