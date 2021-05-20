@@ -7,6 +7,8 @@
 @Date   ：2021/4/27 9:24
 @Desc   ：封我IP  解决一哈
 =================================================='''
+from time import sleep
+
 import requests
 import json
 
@@ -45,21 +47,25 @@ def rep_Ip():
 
 # 资源查询
 def que_Ip():
+    sleep(5)
     re = requests.get(url=que_IP,proxies=proxiesNone).text
     print("资源查询 ",re)
     reJson = json.loads(re)
-    if reJson["TaskList"]:
-        tasklist = reJson["TaskList"]
-        for dc in tasklist:
-            DataList=dc["Data"]
-        for data in DataList:
-            print(data["IP"])
-            print(data["port"])
-    else:
+    try:
+        if reJson["TaskList"]:
+            tasklist = reJson["TaskList"]
+            for dc in tasklist:
+                DataList=dc["Data"]
+            for data in DataList:
+                print(data["IP"])
+                print(data["port"])
+    except KeyError:
         get_Ip()
     return data
 
 def get_proxies():
+    sleep(5)
+
     # 查询资源
     data = que_Ip()
     # 代理服务器

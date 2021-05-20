@@ -21,6 +21,33 @@ conn = pymysql.connect(
 cursor = conn.cursor()
 
 
+def inQGIp(ip):
+    A = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    A = '"'+ A +'"'
+    sql =  "INSERT INTO qg_ip (IP,SJ) VALUES({},{})".format(ip,A)
+    cursor.execute(sql)
+    conn.commit()
+
+"""
+获取当前ip 是否设置进 青果的白名单IP中
+"""
+def getQGIp(ip):
+    pass
+    sql =" SELECT IP FROM qg_ip WHERE IP = {};".format(ip)
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    return len(results)
+
+def getUrlIsOrNo(url):
+    pass
+    sql = """
+    SELECT Url FROM cn_china_cn WHERE Url = "%s";
+    """ % (url)
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    return len(results)
+
+
 """
 ip存储库
 """
@@ -42,7 +69,7 @@ def getSqlProxyMeta():
 
 
 def getDataDb(tableName):
-    sql = """SELECT * FROM %s;
+    sql = """SELECT * FROM %s  WHERE isOrNo<2 AND id >11741;
                         """ % (tableName)
     cursor.execute(sql)
     results = cursor.fetchall()
@@ -123,17 +150,18 @@ def updateIsOrNo(tableDb,id):
 """
 def addDate(dataDb,name,url,zy,lxr,dh,sj,dz):
     A = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    A = '"' + A + '"'
-    sql = """
-    INSERT INTO %s (Name,Url,Zy,LXR,DH,SJ,DZ,shiJian)VALUES('%s','%s','%s','%s','%s','%s','%s','%s');
-    """%(dataDb,name,url,zy,lxr,dh,sj,dz,A)
+    sql = """INSERT INTO %s (Name,Url,Zy,LXR,DH,SJ,DZ,shiJian)VALUES('%s','%s','%s','%s','%s','%s','%s','%s');"""%(dataDb,name,url,zy,lxr,dh,sj,dz,A)
     cursor.execute(sql)
     conn.commit()
-    print("sql::::   ",sql)
-    print("已存入数据！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！")
+    print(sql)
 
-if __name__ == '__main__':
-    updateIsOrNo("search",1)
+
+
+
+# if __name__ == '__main__':
+#     url = "https://jinshengjixie2015.cn.china.cn/contact-information/"
+
+    # updateIsOrNo("search",1)
     # cursor.execute("SELECT Name,Url FROM ziyouname WHERE id<50;")
     # for data in cursor.fetchall():
     #     insDataAll(data)

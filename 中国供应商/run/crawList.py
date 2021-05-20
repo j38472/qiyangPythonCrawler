@@ -10,6 +10,7 @@
 =================================================='''
 #
 import re
+from datetime import time,datetime
 
 import requests
 from lxml import etree
@@ -17,14 +18,46 @@ from lxml import etree
 from 中国供应商.run import myJDBC, craw, myIP
 
 # 用于 存储ip
+from 中国供应商.run.myJDBC import getUrlIsOrNo, getQGIp, inQGIp
 from 中国供应商.run.myRequests import getHtmlData
 
 # 本次列表一共搜索出多少条数据
 xpathLS = "//div[@class='location_an']/span[@class='fr']/span/text()"
 
 coent = 0
+
+
+booIp = False
+DAY_START = time(2,00)
+DAY_END = time(2,5)
+proxiesNone = {
+    "http": None,
+    "https": None
+}
+def setQGIp():
+    pass
+    global booIp
+    current_time = datetime.now().time()
+    if DAY_START < current_time <DAY_END and booIp:
+        pass
+        booIp = False
+        urlGetIP = "https://httpbin.org/ip"
+        ipText = requests.get(url=urlGetIP,proxies=proxiesNone).text
+        ipTextEval = eval(ipText)
+        ip = ipTextEval['origin']
+        ipIsOrNo = getQGIp(ip)
+        if ipIsOrNo == 0:
+            setIP = "https://proxy.qg.net/whitelist/add?Key=F58B5B03A518E080&IP={}".format(ip)
+            requests.post(url=setIP, proxies=proxiesNone)
+            print("青果白名单ip添加成功")
+            inQGIp(ip)
+    if current_time < DAY_START and booIp ==False:
+        pass
+        booIp = True
+
 def getListData(url, cont):
     global coent
+    coent += 1
     cont += 1
     html = getHtmlData(url)
     if html != 404:
@@ -57,13 +90,22 @@ def getListData(url, cont):
                 sqUrl += "/contact-information/"
                 # print("sqUrl", sqUrl)
                 # 爬取详情页信息
-                craw.start(sqUrl)
-                coent += 1
-            # 每八十个详情页请求  或者每三个列表页  就更新下ip
-            if coent % 80 == 0 or cont % 3 ==0:
-                print(coent)
-                print(cont)
-                coent = 0
+                i = getUrlIsOrNo(sqUrl)
+                # 判断当前是否要向青果添加ip白名单
+                setQGIp()
+                if i<1:
+                    print("个数 i：： ",i)
+
+                    craw.start(sqUrl)
+
+                else:
+                    pass
+                    # print("已经有这个URL的数据了,个数 i：： ",i)
+            if coent!=0 and coent % 20 == 0:
+                print("（20次打印一下）当前详情页计数器： ", coent)
+
+            if coent!=0 and coent % 80 == 0:
+                print("当前详情页页计数器： ", coent)
                 myIP.rep_Ip()
                 myIP.get_proxies()
 
@@ -98,23 +140,44 @@ def getListData(url, cont):
 
 if __name__ == '__main__':
     # 每次开始  列表页的计数器就从零开始
-    # myIP.rep_Ip()
-    # myIP.get_proxies()
-    # getListData("https://www.china.cn/search/51bi3r.shtml?p=10",0)
+    myIP.rep_Ip()
+    myIP.get_proxies()
+    # exit()
+    #
+    """
+    数据库中已经修改为采集过了 。。。。。
+    需要重新采集的列表页
+     https://www.china.cn/search/37ba.shtml?p=7
+    https://www.china.cn/search/5q95mi.shtml?p=6
+    https://www.china.cn/search/fxd6od.shtml?p=4
+    https://www.china.cn/search/4zwx.shtml?p=12
+    https://www.china.cn/search/nnkgbd.shtml?p=12
+    
+    
+    
+    https://www.china.cn/search/5a2esa.shtml?p=5
+    https://www.china.cn/search/rz0u1a.shtml?p=15
+    https://www.china.cn/search/5a2esa.shtml?p=10    
+    https://www.china.cn/search/5af8bx.shtml?p=5
+    https://www.china.cn/search/zwh7wqb.shtml?p=3
+    """
+    # getListData("https://www.china.cn/search/5a2esa.shtml?p=5", 0)
+    print("&" * 50)
 
-    # 正式开始
-    ## fd = "www.china.cn/search"
+    # 从id>11741的开始 。。。。  太多了  跳着爬吧  。。。。
+    # 正式开始   已经改了 查询的sql 可以改一下  直接去获取应该爬取的数据  而不再程序中再去判断
     listSearch = myJDBC.getDataDb("search")
     for search in listSearch:
         id = search[0]
         url = search[1]
         isOrNo = search[2]
         # 每次开始  列表页的计数器就从零开始
-      #    print("url  ", url)
-      #    print(type(isOrNo))
+        #    print("url  ", url)
+        #    print(type(isOrNo))
         if isOrNo == None or isOrNo < 2:
-            myIP.rep_Ip()
-            myIP.get_proxies()
+            # myIP.rep_Ip()
+            # myIP.get_proxies()
+            print("列表页url  ", url)
             getListData(url, 0)
-        #     每一次处理完该条列表页 都需要修改isOrNo
+            #     每一次处理完该条列表页 都需要修改isOrNo
             myJDBC.updateIsOrNo("search", id)

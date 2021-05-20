@@ -24,7 +24,6 @@ from urllib3.exceptions import MaxRetryError
 from urllib3.exceptions import ProxyError as urllib3_ProxyError
 
 proxiesNone = {
-    # 根据请求方式（http/https）的不同，可以选择不同的代理
     "http": None,
     "https": None
 }
@@ -48,8 +47,8 @@ header = {
 cont = 0
 def getHtmlData(url):
     global cont
-    print("当前页面的URL  ",url)
-
+    # print("当前页面的URL  ",url)
+    html="0"
     pmeta = myJDBC.getSqlProxyMeta()
     proxyMeta = pmeta[0][0]
     proxies = {
@@ -57,13 +56,13 @@ def getHtmlData(url):
         # "http": proxyMeta,
         "https": proxyMeta
     }
-    print("当前请求页面的ip：：    ",proxies)
+
     # {'http': 'http://183.155.111.253:46264'}
     # , proxies=proxies
     # 证书问题
 
     # 控制爬虫频率
-    sleep(3)
+    sleep(2.5)
 
     requests.packages.urllib3.disable_warnings()
     requests.get = partial(requests.get, verify=False, proxies=proxies)
@@ -76,10 +75,11 @@ def getHtmlData(url):
         res = s.get(url=url, proxies=proxies,headers=header, timeout=5)
         res.encoding = 'gbk'
         code = res.status_code
+        html = "111111111111"
         html = res.text
         # print("html::",html)
         global cont
-        print("状态码为:: ", code)
+        print("当前请求页面的ip：：    ", proxies,"           ","状态码为:: ", code)
         # print(html)
 
 
@@ -102,11 +102,13 @@ def getHtmlData(url):
             myIP.rep_Ip()
             myIP.get_proxies()
             print("Error")
-            # getHtmlData(url)
+            getHtmlData(url)
 
 
     # proxies = {"http": None, "https": None}
     # resp = requests.get(url=url,proxies=proxies)
+    if len(html) < 3 :
+        getHtmlData(url)
     return html
 
 

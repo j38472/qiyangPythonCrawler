@@ -170,16 +170,14 @@ def start(url):
         xpathlxr = "//div[1]/div[2]/dl/dd[1]/div/span[1]/text()"
         xpathZy1 = "//*[@id=\"signboard\"]/div[1]/div[1]/h2/text()"
         xpathZy2 = "//div[@class=\"business\"]/text()"
-        selector = etree.HTML(response.encode('gbk'))
-        dzList = selector.xpath(xpathDz)
+        selector = etree.HTML(response)
         nameList = selector.xpath(xpathName1)
         lxrList = selector.xpath(xpathlxr)
         zyList = selector.xpath(xpathZy1)
         if len(zyList) == 0:
             zyList = selector.xpath(xpathZy2)
         if len(nameList) == 0:
-            nameList = selector.xpath(xpathName2)\
-
+            nameList = selector.xpath(xpathName2)
 
         if zyList:
             zy = zyList[0]
@@ -190,8 +188,6 @@ def start(url):
         # print(lxrList)
         # print(len(lxrList))
         # print(type(lxrList))
-
-
 
         data = selector.xpath(dataXpaht)
         # print(type(data))
@@ -206,8 +202,7 @@ def start(url):
                 if d2[0].find('address') > -1:
                     # print("地址找到了")
                     dz = d2[1]
-                    print(d2[1])
-
+                    # print(d2[1])
 
         # print((dzList))
         # print((nameList))
@@ -234,26 +229,28 @@ def start(url):
                 sjDataList = getuniData(SJNuiList)
                 sj = getDh(sjDataList)
 
-        print("--------------------------------------------------------------")
-        name = name.replace("'","")
-        dz = dz.replace("'","")
-        zy = zy.replace("'","")
-        lxr = lxr.replace("'","")
-        # 现在的速度是 5秒左右 一个解析出一条数据  还行.....
-        print(time.strftime("%Y-%m-%d %H:%M:%S",time.localtime()))
+        # print("--------------------------------------------------------------")
+        name = name.replace("'", "")
+        dz = dz.replace("'", "")
+        zy = zy.replace("'", "")
+        lxr = lxr.replace("'", "")
+        # 现在的速度是 3-7秒左右 一个解析出一条数据  还行.....
 
-        print("name 公司名字  ",name)
-        print("lxr 联系人  ",lxr)
-        print("dh 电话  ",dh)
-        print("sj 手机  ",sj)
-        print("dz 地址  ",dz)
-        print("zy  主营  ",zy)
+        # print(time.strftime("%Y-%m-%d %H:%M:%S",time.localtime()))
+        #
+        # print("name 公司名字  ",name)
+        # print("lxr 联系人  ",lxr)
+        # print("dh 电话  ",dh)
+        # print("sj 手机  ",sj)
+        # print("dz 地址  ",dz)
+        # print("zy  主营  ",zy)
+        myJDBC.addDate(dataDb="cn_china_cn", name=name, lxr=lxr, dh=dh, sj=sj, zy=zy, dz=dz, url=url)
         print("--------------------------------------------------------------")
-        myJDBC.addDate(dataDb="cn_china_cn",name=name,lxr=lxr,dh=dh,sj=sj,zy=zy,dz=dz,url=url)
         if name == "" and lxr == "" and dh == "" and sj == "" and dz == "" and zy == "":
             print("全都是空，更换ip")
             myIP.rep_Ip()
             myIP.get_proxies()
+
 
 # 这个主要用于测试的   {'http': 'http://183.155.109.40:59603'}
 if __name__ == '__main__':
@@ -275,7 +272,6 @@ if __name__ == '__main__':
     # https://jiushenjiuhang.cn.china.cn
     # https://www.china.cn/hunningtujiaobanc/3747179508.html
     # proxie = myIP.get_proxies()
-
 
     start("https://shop1368412296764.cn.china.cn/contact-information/")
 

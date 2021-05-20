@@ -21,7 +21,11 @@
 #     scheduler.add_job(self.get_bar, 'cron', second='*/10', args=[_quene])
 #     # 启动调度器，后台监控定时任务，到点执行
 #     scheduler.start()
+import base64
+import time
 
 if __name__ == '__main__':
-
+    print(time.time())
+    exit()
+    # print(base64.b64decode("aaaaaaaa"))
     pass
