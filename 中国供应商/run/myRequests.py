@@ -64,15 +64,15 @@ def getHtmlData(url):
     # 控制爬虫频率
     sleep(2.5)
 
-    requests.packages.urllib3.disable_warnings()
-    requests.get = partial(requests.get, verify=False, proxies=proxies)
-
-    s = requests.Session()
-    s.mount('http://', HTTPAdapter(max_retries=3))
-    s.mount('https://', HTTPAdapter(max_retries=3))
+    # requests.packages.urllib3.disable_warnings()
+    # requests.get = partial(requests.get, verify=False, proxies=proxies)
+    #
+    # s = requests.Session()
+    # s.mount('http://', HTTPAdapter(max_retries=3))
+    # s.mount('https://', HTTPAdapter(max_retries=3))
 
     try:
-        res = s.get(url=url, proxies=proxies,headers=header, timeout=5)
+        res = requests.get(url=url, proxies=proxies,headers=header, timeout=5)
         res.encoding = 'gbk'
         code = res.status_code
         html = "111111111111"
@@ -93,7 +93,7 @@ def getHtmlData(url):
             sleep(6)
             getHtmlData(url)
 
-    except ConnectionError as ce:
+    except Exception as ce:
         if (isinstance(ce.args[0], MaxRetryError) and
             isinstance(ce.args[0].reason, urllib3_ProxyError)):
             # oops, requests should have handled this, but didn't.
@@ -102,13 +102,13 @@ def getHtmlData(url):
             myIP.rep_Ip()
             myIP.get_proxies()
             print("Error")
-            getHtmlData(url)
+            # getHtmlData(url)
 
 
     # proxies = {"http": None, "https": None}
     # resp = requests.get(url=url,proxies=proxies)
-    if len(html) < 3 :
-        getHtmlData(url)
+    # if len(html) < 3 :
+    #     getHtmlData(url)
     return html
 
 
