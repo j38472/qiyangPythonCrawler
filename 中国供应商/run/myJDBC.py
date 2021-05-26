@@ -13,7 +13,7 @@ import pymysql
 
 conn = pymysql.connect(
     host="localhost",
-    port=3306,
+    port=6606,
     db="qiyang",
     user="root",
     password="root",
@@ -22,9 +22,9 @@ cursor = conn.cursor()
 
 
 def inQGIp(ip):
-    A = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    A = '"'+ A +'"'
-    sql =  "INSERT INTO qg_ip (IP,SJ) VALUES({},{})".format(ip,A)
+    MyTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    MyTime = '"'+ MyTime +'"'
+    sql =  "INSERT INTO qg_ip (IP,SJ) VALUES({},{})".format(ip,MyTime)
     cursor.execute(sql)
     conn.commit()
 
