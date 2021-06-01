@@ -26,8 +26,8 @@ proxiesNone = {
 }
 jdbc = mySqlJdbc()
 wyXpath = "//ul[@id='ContentPlaceHolder1_PagingHelper1']/span/a/@href"
-lburl = "http://gp.zgny.com.cn/Companys/Page_{}.shtml"
-url = "http://gp.zgny.com.cn/Companys/index.shtml"
+# http://www.worldfood.com.cn/Products/Page_2_NodeId_food_cp_sptjg.shtml
+lburl = "http://xm.zgny.com.cn/Products/Page_{}_NodeId_xm_cp_roulei.shtml"
 boo = True
 
 
@@ -45,27 +45,34 @@ def start(c):
         # ym = int(ym)
         # print(type(ym))
         # print(ym)
-        for i in range(1, 5174 + 1):
+        for i in range(0, 42 + 1):
             # 445
-            if i > 181 and i>c:
-                print(i)
+            if i > 0 and i>c:
+                # print(i)
                 strYm = str(i)
                 lburlz = lburl.format(strYm)
                 sleep(2.5)
-                # print(i)
+                print(lburlz)
                 requ = requests.get(url=lburlz, headers=header, proxies=proxiesNone, timeout=14)
                 htmllburlz = requ.text
                 # print(htmllburlz)
                 # exit()
 
                 selector = etree.HTML(htmllburlz)
-                xqymURl = selector.xpath("//li/div/div[1]/a[1]/@href")
+                # xqymURl = selector.xpath("//li/div/div[1]/a[1]/@href")
+                xqymURl = selector.xpath("//ul/li/div[@class='proCon']/div[@class='gqGongSi proGongSi']/a[@class='yanSe_03']/@href")
+                xqymURl = set(xqymURl)
+                print(len(xqymURl))
                 for xqymurl in xqymURl:
-
-                    isOrNo = jdbc.getIsOrNo(xqymurl)
-                    if len(isOrNo) == 0:
-                        print(lburlz)
+                    isOrNo = len(jdbc.getIsOrNo(xqymurl))
+                    # exit()
+                    # print(xqymurl)
+                    print("xqymurl ::  ",xqymurl,"_____isOrNo ::  ", isOrNo)
+                    if  isOrNo == 0:
+                        # print(lburlz)
+                        # xqymurl = spUrlPj+xqymurl
                         print(xqymurl)
+                        # exit()
                         sleep(2)
                         reqxqymurl = requests.get(url=xqymurl, headers=header, proxies=proxiesNone, timeout=14).text
                         xpathName = "/html/body/div[7]/div[9]/div[1]/span/text()"

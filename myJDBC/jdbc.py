@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 '''=================================================
-@Project -> File   ：qiyangPythonCrawler -> mySqlJdbc
+@Project -> File   ：qiyangPythonCrawler -> jdbc
 @IDE    ：PyCharm
 @Author ：Mr. cyh
-@Date   ：2021/5/24 9:35
+@Date   ：2021-05-31 11:42
 @Desc   ：
 =================================================='''
 import time
@@ -23,44 +23,38 @@ class mySqlJdbc():
         )
         self.cursor = self.conn.cursor()
 
-    def setSearch(self,id):
+    def setSearch(self,id,dataBD):
         self.MyTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        self.sql = "UPDATE zgny_search SET isOrNo=2,shiJian = %s WHERE id = %s".format(self.MyTime,id)
+        self.sql = "UPDATE {} SET isOrNo=2,shiJian = {} WHERE id = {}".format(dataBD,self.MyTime,id)
+        print(self.sql)
+        self.cursor.execute(self.sql)
+        self.conn.commit()
+        pass
+    # 获取对应数据表中存在的URL的个数
+    def getIsOrNo(self,url,dataBD):
+        self.sql ="SELECT * FROM {} WHERE Url = '{}';".format(dataBD,url)
+        self.cursor.execute(self.sql)
+        self.results = self.cursor.fetchall()
+        return len(self.results)
+
+    def inXqDate(self,name,url,zy,lxr,dh,sj,dz,dataBD):
+        self.MyTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        self.sql = "INSERT INTO {} (Name,Url,Zy,LXR,DH,SJ,DZ,ShiJian) VALUES('{}','{}','{}','{}','{}','{}','{}','{}')".format(dataBD,name,url,zy,lxr,dh,sj,dz,self.MyTime)
         print(self.sql)
         self.cursor.execute(self.sql)
         self.conn.commit()
         pass
 
-    def getIsOrNo(self,url):
-        self.sql ="SELECT * FROM zgny_data WHERE Url = '{}';".format(url)
+    def getLbUrl(self, dataBD):
+        self.sql = "SELECT id,Url FROM {} WHERE isOrNo = 0".format(dataBD)
         self.cursor.execute(self.sql)
         self.results = self.cursor.fetchall()
         return self.results
 
-    def inXqDate(self,name,url,zy,lxr,dh,sj,dz):
-        self.MyTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        self.sql = "INSERT INTO zgny_data (Name,Url,Zy,LXR,DH,SJ,DZ,ShiJian) VALUES('{}','{}','{}','{}','{}','{}','{}','{}')".format(name,url,zy,lxr,dh,sj,dz,self.MyTime)
-        print(self.sql)
-        self.cursor.execute(self.sql)
-        self.conn.commit()
-        pass
-
-    def getLbUrl(self, tabedate):
-        self.sql = "SELECT id,Url FROM {} WHERE isOrNo = 0".format(tabedate)
-        self.cursor.execute(self.sql)
-        self.results = self.cursor.fetchall()
-        return self.results
-
-    def inSearch(self, url, name):
+    def inSearch(self, url, name,dataBD):
         MyTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         MyTime = '"' + MyTime + '"'
-        sql = "INSERT INTO zgny_search (name,url) VALUES('{}','{}')".format(name, url)
+        sql = "INSERT INTO {} (name,url) VALUES('{}','{}')".format(dataBD,name, url)
         print(sql)
         self.cursor.execute(sql)
         self.conn.commit()
-if __name__ == '__main__':
-    url = "http://www.zgny.com.cn/emembershow19478.shtml"
-    url1 = "http://user.zgny.com.cn/Users/index_1_467856.shtml"
-    jdbc = mySqlJdbc()
-    print(len(jdbc.getIsOrNo(url)))
-    print(len(jdbc.getIsOrNo(url1)))
