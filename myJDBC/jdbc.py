@@ -25,11 +25,12 @@ class mySqlJdbc():
 
     def setSearch(self,id,dataBD):
         self.MyTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        self.sql = "UPDATE {} SET isOrNo=2,shiJian = {} WHERE id = {}".format(dataBD,self.MyTime,id)
+        self.sql = "UPDATE {} SET isOrNo=2,shiJian = '{}' WHERE  id = {}".format(dataBD,self.MyTime,id)
         print(self.sql)
         self.cursor.execute(self.sql)
         self.conn.commit()
         pass
+
     # 获取对应数据表中存在的URL的个数
     def getIsOrNo(self,url,dataBD):
         self.sql ="SELECT * FROM {} WHERE Url = '{}';".format(dataBD,url)
@@ -52,9 +53,7 @@ class mySqlJdbc():
         return self.results
 
     def inSearch(self, url, name,dataBD):
-        MyTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        MyTime = '"' + MyTime + '"'
-        sql = "INSERT INTO {} (name,url) VALUES('{}','{}')".format(dataBD,name, url)
+        sql = "INSERT INTO {} (name,url,isOrNo) VALUES('{}','{}',{})".format(dataBD,name, url,1)
         print(sql)
         self.cursor.execute(sql)
         self.conn.commit()

@@ -64,7 +64,7 @@ def getHtml(pathurl):
     global url
     time.sleep(2.5)
     t = int(time.time())
-    # print(pathurl)
+    print(pathurl)
     header = {
         'User-Agent': ua.random,
         'path': pathurl,
@@ -72,7 +72,7 @@ def getHtml(pathurl):
             str(t), str(t + 1))
     }
     url_ = url + pathurl
-    req = requests.get(url=url_, headers=header, proxies=proxiesNone, timeout=14)
+    req = requests.get(url=url_, headers=header, proxies=proxiesNone, timeout=14,verify=False)
     reqHtml = req.text
     # print(reqHtml)
     # exit()
@@ -141,7 +141,7 @@ def getXQ(pathurl):
 
 
 if __name__ == '__main__':
-    for i in range(30, 12832 + 1):
+    for i in range(192+1, 12832 + 1):
         print("<><><><><><<><><><><>",i,"<><><><><><<><><><><>")
         ymStr = str(i)
         path = urlLBCS.format(ymStr)

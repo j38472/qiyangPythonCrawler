@@ -24,12 +24,9 @@
             src : 里面的数据 取出  在与  http://ct1234h.cn.makepolo.com 拼接后面  即可获取到照片
             rf ua 应该需要设置
             先生成一个标准库  再搞到坐标值
+
+
+
+            Cookie: _vid=C955215EB1100001B5BE2520E270D480; PHPSESSID=anjspp251bmp2ojhob28ik5c14; Hm_lvt_7e7577ecbf4c96abade7fbcaa1d3b519=1622538394; Hm_lpvt_7e7577ecbf4c96abade7fbcaa1d3b519=1622596558
+            Cookie: _vid=C955215EB1100001B5BE2520E270D480; PHPSESSID=anjspp251bmp2ojhob28ik5c14; Hm_lvt_7e7577ecbf4c96abade7fbcaa1d3b519=1622538394; Hm_lpvt_7e7577ecbf4c96abade7fbcaa1d3b519=1622538703
 =================================================='''
-
-import requests
-
-if __name__ == '__main__':
-    proxies = {"http": None, "https": None}
-    url = "http://senbaoyuan02.cn.makepolo.com/contact_us.html"
-    htmlpage = requests.get(url=url,proxies=proxies).text
-    print(htmlpage)
