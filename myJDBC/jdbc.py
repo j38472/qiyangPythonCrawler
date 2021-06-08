@@ -53,7 +53,7 @@ class mySqlJdbc():
         return self.results
 
     def inSearch(self, url, name,dataBD):
-        sql = "INSERT INTO {} (name,url,isOrNo) VALUES('{}','{}',{})".format(dataBD,name, url,1)
+        sql = "INSERT INTO {} (name,url,isOrNo) VALUES('{}','{}',{})".format(dataBD,name, url,0)
         print(sql)
         self.cursor.execute(sql)
         self.conn.commit()

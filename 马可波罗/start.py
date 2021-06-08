@@ -219,11 +219,15 @@ def getLB(url):
 
 if __name__ == '__main__':
     # getXQ("http://jorsune.cn.makepolo.com/contact_us.html")
+    # url = "http://china.makepolo.com/list/spc1276/"
+    # k = re.search(r"spc([0-9]*)/", url, flags=re.S).group(1)
+    # url = "http://caigou.makepolo.com/scw.php?newcid=" + k + "&search_flag=q1"
+    # getLB(url)
+    # exit()
 
-    getLB("http://caigou.makepolo.com/scw.php?pg=41&newcid=1209&search_flag=q1")
-    jdbc.setSearch(110, "mkbl_search")
+    getLB("http://caigou.makepolo.com/scw.php?pg=21&newcid=1201&search_flag=q1")
+    jdbc.setSearch(168, "mkbl_search")
 
-    #
     # getXQ("http://wfaolongfood.cn.makepolo.com/contact_us.html")
     # exit()
     id_url_list = jdbc.getLbUrl("mkbl_search")
