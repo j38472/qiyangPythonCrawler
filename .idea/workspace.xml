@@ -2,20 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3be4ecc3-870a-4770-973f-9755ccb2b83c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/1588_tv_食品招商网/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/1588_tv_食品招商网/demo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/1588_tv_食品招商网/httpx_start.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chian_food_食品信息网/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chian_food_食品信息网/start.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/TOOL.PY" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/食品科技网/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/食品科技网/demo.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/食品科技网/start_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/食品科技网/test_search.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/万国企业网/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/万国企业网/lb.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/万国企业网/start_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/万国企业网/start_search.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/myJDBC/jdbc.py" beforeDir="false" afterPath="$PROJECT_DIR$/myJDBC/jdbc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/马可波罗/start.py" beforeDir="false" afterPath="$PROJECT_DIR$/马可波罗/start.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,8 +18,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -85,51 +77,7 @@
       <recent name="E:\python\qiyangPythonCrawler\中国供应商\run" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.start">
-    <configuration name="__init__ (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="qiyangPythonCrawler" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/1588_tv_食品招商网" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/1588_tv_食品招商网/__init__.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="httpx_start" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="qiyangPythonCrawler" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/1588_tv_食品招商网" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/1588_tv_食品招商网/httpx_start.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.start_data (1)">
     <configuration name="start" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="qiyangPythonCrawler" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -152,6 +100,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="start_data (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="qiyangPythonCrawler" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/万国企业网" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/万国企业网/start_data.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="start_data" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="qiyangPythonCrawler" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -166,6 +136,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/食品科技网/start_data.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="start_search" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="qiyangPythonCrawler" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/万国企业网" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/万国企业网/start_search.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -198,11 +190,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.start_data (1)" />
+        <item itemvalue="Python.start_search" />
         <item itemvalue="Python.start" />
         <item itemvalue="Python.start_data" />
         <item itemvalue="Python.test_search" />
-        <item itemvalue="Python.__init__ (1)" />
-        <item itemvalue="Python.httpx_start" />
       </list>
     </recent_temporary>
   </component>
@@ -243,7 +235,7 @@
       <workItem from="1622422237344" duration="22842000" />
       <workItem from="1622528337130" duration="60845000" />
       <workItem from="1622777399653" duration="7333000" />
-      <workItem from="1623029843069" duration="38897000" />
+      <workItem from="1623029843069" duration="55803000" />
     </task>
     <servers />
   </component>
@@ -278,6 +270,7 @@
     <SUITE FILE_PATH="coverage/qiyangPythonCrawler$_.coverage" NAME="键值对_字典 Coverage Results" MODIFIED="1619405715669" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/中国供应商/test" />
     <SUITE FILE_PATH="coverage/qiyangPythonCrawler$myRequests.coverage" NAME="myRequests Coverage Results" MODIFIED="1620266277836" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/中国供应商/run" />
     <SUITE FILE_PATH="coverage/qiyangPythonCrawler$test.coverage" NAME="test Coverage Results" MODIFIED="1623047464892" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/食品科技网" />
+    <SUITE FILE_PATH="coverage/qiyangPythonCrawler$start_search.coverage" NAME="start_search Coverage Results" MODIFIED="1623142216714" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/万国企业网" />
     <SUITE FILE_PATH="coverage/qiyangPythonCrawler$fromData.coverage" NAME="fromData Coverage Results" MODIFIED="1619597477405" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/中国供应商/run" />
     <SUITE FILE_PATH="coverage/qiyangPythonCrawler$xmlET.coverage" NAME="xmlET Coverage Results" MODIFIED="1619061743187" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/中国供应商" />
     <SUITE FILE_PATH="coverage/qiyangPythonCrawler$demo.coverage" NAME="demo Coverage Results" MODIFIED="1623031080210" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/1588_tv_食品招商网" />
@@ -292,6 +285,7 @@
     <SUITE FILE_PATH="coverage/qiyangPythonCrawler$IP.coverage" NAME="IP Coverage Results" MODIFIED="1619494229588" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/中国供应商/run" />
     <SUITE FILE_PATH="coverage/qiyangPythonCrawler$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1622621957083" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/马可波罗" />
     <SUITE FILE_PATH="coverage/qiyangPythonCrawler$start__1_.coverage" NAME="start (1) Coverage Results" MODIFIED="1622777581415" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/马可波罗" />
+    <SUITE FILE_PATH="coverage/qiyangPythonCrawler$start_data__1_.coverage" NAME="start_data (1) Coverage Results" MODIFIED="1623224538969" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/万国企业网" />
     <SUITE FILE_PATH="coverage/qiyangPythonCrawler$xmlCR.coverage" NAME="xmlCR Coverage Results" MODIFIED="1619061437168" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/中国供应商" />
     <SUITE FILE_PATH="coverage/qiyangPythonCrawler$JXXml.coverage" NAME="JXXml Coverage Results" MODIFIED="1619147252720" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/中国供应商/run" />
     <SUITE FILE_PATH="coverage/qiyangPythonCrawler$ocrText.coverage" NAME="ocrText Coverage Results" MODIFIED="1622621101919" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/马可波罗" />

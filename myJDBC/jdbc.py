@@ -23,28 +23,34 @@ class mySqlJdbc():
         )
         self.cursor = self.conn.cursor()
 
-    def setSearch(self,id,dataBD):
+    def setSearch(self, id, dataBD):
         self.MyTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        self.sql = "UPDATE {} SET isOrNo=2,shiJian = '{}' WHERE  id = {}".format(dataBD,self.MyTime,id)
+        self.sql = "UPDATE {} SET isOrNo=2,shiJian = '{}' WHERE  id = {}".format(dataBD, self.MyTime, id)
         print(self.sql)
         self.cursor.execute(self.sql)
         self.conn.commit()
         pass
 
-    # 获取对应数据表中存在的URL的个数
-    def getIsOrNo(self,url,dataBD):
-        self.sql ="SELECT * FROM {} WHERE Url = '{}';".format(dataBD,url)
+    def setSearchUrl(self, id, url, dataBD):
+        self.sql = "UPDATE {} SET url = '{}' WHERE  id = {}".format(dataBD, url, id)
+        print(self.sql)
         self.cursor.execute(self.sql)
-        self.results = self.cursor.fetchall()
-        return len(self.results)
+        self.conn.commit()
 
-    def inXqDate(self,name,url,zy,lxr,dh,sj,dz,dataBD):
+    def inXqDate(self, name, url, zy, lxr, dh, sj, dz, dataBD):
         self.MyTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        self.sql = "INSERT INTO {} (Name,Url,Zy,LXR,DH,SJ,DZ,ShiJian) VALUES('{}','{}','{}','{}','{}','{}','{}','{}')".format(dataBD,name,url,zy,lxr,dh,sj,dz,self.MyTime)
+        self.sql = "INSERT INTO {} (Name,Url,Zy,LXR,DH,SJ,DZ,ShiJian) VALUES('{}','{}','{}','{}','{}','{}','{}','{}')".format(
+            dataBD, name, url, zy, lxr, dh, sj, dz, self.MyTime)
         print(self.sql)
         self.cursor.execute(self.sql)
         self.conn.commit()
         pass
+
+    def inSearch(self, url, name, dataBD):
+        sql = "INSERT INTO {} (name,url,isOrNo) VALUES('{}','{}',{})".format(dataBD, name, url, 0)
+        print(sql)
+        self.cursor.execute(sql)
+        self.conn.commit()
 
     def getLbUrl(self, dataBD):
         self.sql = "SELECT id,Url FROM {} WHERE isOrNo = 0".format(dataBD)
@@ -52,8 +58,15 @@ class mySqlJdbc():
         self.results = self.cursor.fetchall()
         return self.results
 
-    def inSearch(self, url, name,dataBD):
-        sql = "INSERT INTO {} (name,url,isOrNo) VALUES('{}','{}',{})".format(dataBD,name, url,0)
-        print(sql)
-        self.cursor.execute(sql)
-        self.conn.commit()
+    # 获取对应数据表中存在的URL的个数
+    def getIsOrNo(self, url, dataBD):
+        self.sql = "SELECT * FROM {} WHERE Url = '{}';".format(dataBD, url)
+        self.cursor.execute(self.sql)
+        self.results = self.cursor.fetchall()
+        return len(self.results)
+
+    def get_BD_Search(self,dataBD):
+        self.sql = "SELECT * FROM {};".format(dataBD)
+        self.cursor.execute(self.sql)
+        self.results = self.cursor.fetchall()
+        return self.results
