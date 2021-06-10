@@ -157,11 +157,13 @@ if __name__ == '__main__':
     # print(get_xq_html("http://aagigf.cn.trustexporter.com/"))
     # exit()
 
-    get_lb("https://qiye.trustexporter.com/s27494/")
-    exit()
+    # start_list("https://qiye.trustexporter.com/s27494/")
+    # exit()
+    # 这个数据还没跑
 
     db = jdbc.get_BD_Search(dataBD_search)
     for d in db:
         id = d[0]
         url = d[2]
         print(id, "  ", url)
+        start_list(url)
