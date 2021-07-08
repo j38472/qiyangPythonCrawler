@@ -81,14 +81,11 @@ if __name__ == '__main__':
     # dz = dz.replace("'","")
     # print(dz)
 
-
     # url = "https://spa10.scrape.center/"
     # page = requests.get(url=url)
     # page.encoding = "utf-8"
     # html = page.text
     # print(html)
-
-
 
     # url = """https://spa6.scrape.center/api/movie/?limit=10&offset=0&token=%s"""%(getToken())
     # print(url)

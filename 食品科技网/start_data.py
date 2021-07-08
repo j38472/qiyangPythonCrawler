@@ -5,7 +5,7 @@
 @IDE    ：PyCharm
 @Author ：Mr. cyh
 @Date   ：2021-06-07 14:50
-@Desc   ：
+@Desc   ：这代码 写的 好恶心  自己都没没眼看  脏眼睛  草
 =================================================='''
 import httpx
 import time
@@ -92,76 +92,12 @@ def get_html_Selector(url):
 
 
 def get_xq(url):
-    global coent
-    name_xpath = "//*[@id=\"sbody\"]/div[1]/div[11]/div[2]/strong/text()"
-    lxr_xpath = "//*[@id=\"sbody\"]/div[1]/div[11]/div[3]/text()"
-    dh_sj_xpath = "//*[@id=\"sbody\"]/div[1]/div[11]/div[4]/text()"
-    dz_xpath = "//*[@id=\"sbody\"]/div[1]/div[11]/div[5]/text()"
-    zy_xpath = "//div[@class='con1']/p/text()"
-    name = ""
-    lxr = ""
-    dh = ""
-    sj = ""
-    dz = ""
-    zy = ""
+    html_sel = get_html_Selector(url)
+    data_xpath = "//*[@id=\"sbody\"]/div[1]/div[11]"
 
-    print(url)
-    html_xq = get_html_Selector(url)
-    try:
-        name_l = html_xq.xpath(name_xpath)
-        for name in name_l:
-            name = name.get()
-
-        lxr_l = html_xq.xpath(lxr_xpath)
-        for lxr in lxr_l:
-            lxr = lxr.get()
-
-        dh_sj_l = html_xq.xpath(dh_sj_xpath)
-        for dh_sj in dh_sj_l:
-            dh_sj = dh_sj.get()
-            if len(dh_sj) > 16:
-                dhAndSj_l = dh_sj.split(" ")
-                for dhAndSj in dhAndSj_l:
-                    print(dhAndSj)
-                    if dhAndSj.find('-') > -1:
-                        dh = dhAndSj
-                    else:
-                        sj = dhAndSj
-            else:
-                if dh_sj.find('-') > -1:
-                    dh = dh_sj
-                else:
-                    sj = dh_sj
-
-        dz_l = html_xq.xpath(dz_xpath)
-        for dz in dz_l:
-            dz = dz.get()
-
-        zy_l = html_xq.xpath(zy_xpath)
-        for zy in zy_l:
-            zy = zy.get()
-            if len(zy) > 500:
-                zy = zy[1:450]
-        if len(name) < 3:
-            coent += 1
-        if len(lxr) < 2:
-            coent += 1
-        if len(dh) < 6:
-            coent += 1
-        if len(sj) < 6:
-            coent += 1
-        if len(dz) < 6:
-            coent += 1
-        if len(zy) < 88:
-            coent += 1
-    except AttributeError:
-        get_xq(url)
-
-    if coent > 4:
-        get_xq(url)
-    else:
-        if name != None:
-            jdbc.inXqDate(name=name, url=url, zy=zy, lxr=lxr, dh=dh, sj=sj, dz=dz, dataBD="tech_food_data")
+    data = html_sel.xpath(data_xpath)
+    print(data)
+    # jdbc.inXqDate(name=name, url=url, zy=zy, lxr=lxr, dh=dh, sj=sj, dz=dz, dataBD="tech_food_data")
     # print(url)
     # print(name)
     # print(lxr)
@@ -192,8 +128,8 @@ def get_list():
 
 
 if __name__ == "__main__":
-    #
-    # url = "https://win.tech-food.com/yingter/"
+
+    # url = "https://win.tech-food.com/ft394094/"
     # get_xq(url)
     # exit()
     #

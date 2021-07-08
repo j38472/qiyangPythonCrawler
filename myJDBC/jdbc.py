@@ -12,7 +12,7 @@ import time
 import pymysql
 
 
-class mySqlJdbc():
+class mySqlJdbc:
     def __init__(self):
         self.conn = pymysql.connect(
             host="localhost",
@@ -22,6 +22,18 @@ class mySqlJdbc():
             password="",
         )
         self.cursor = self.conn.cursor()
+
+    def rmDataId(self,id,dataBD):
+        self.sql = "DELETE FROM {} WHERE id = {};".format(dataBD,id)
+        print(self.sql)
+        self.cursor.execute(self.sql)
+        self.conn.commit()
+
+    def inHnSJ(self, url, sj, dataBD):
+        self.sql = "INSERT INTO {} (Url,SJ) VALUES('{}','{}')".format(dataBD, url, sj)
+        print(self.sql)
+        self.cursor.execute(self.sql)
+        self.conn.commit()
 
     def setSearch(self, id, dataBD):
         self.MyTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -33,6 +45,12 @@ class mySqlJdbc():
 
     def setSearchUrl(self, id, url, dataBD):
         self.sql = "UPDATE {} SET url = '{}' WHERE  id = {}".format(dataBD, url, id)
+        print(self.sql)
+        self.cursor.execute(self.sql)
+        self.conn.commit()
+
+    def setDataSj(self, id, sj, dataBD):
+        self.sql = "UPDATE {} SET sj = '{}' WHERE  id = {}".format(dataBD, sj, id)
         print(self.sql)
         self.cursor.execute(self.sql)
         self.conn.commit()
@@ -65,7 +83,13 @@ class mySqlJdbc():
         self.results = self.cursor.fetchall()
         return len(self.results)
 
-    def get_BD_Search(self,dataBD):
+    def get_BD_Search(self, dataBD):
+        self.sql = "SELECT * FROM {};".format(dataBD)
+        self.cursor.execute(self.sql)
+        self.results = self.cursor.fetchall()
+        return self.results
+
+    def get_BD_Data(self, dataBD):
         self.sql = "SELECT * FROM {};".format(dataBD)
         self.cursor.execute(self.sql)
         self.results = self.cursor.fetchall()
