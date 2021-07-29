@@ -201,7 +201,7 @@ def getLB(url):
         for xq_url in xq_url_list:
             xq_url = "http:" + xq_url
             # print(xq_url)
-            isOrNo = jdbc.getIsOrNo(xq_url,"mkbl_data")
+            isOrNo = jdbc.getUrlGs(xq_url, "mkbl_data")
             if isOrNo <1:
                 getXQ(xq_url)
             else:

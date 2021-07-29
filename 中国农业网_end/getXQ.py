@@ -14,7 +14,7 @@ import requests
 from lxml import etree
 import re
 
-from 中国农业网.mySqlJdbc import mySqlJdbc
+from 中国农业网_end.mySqlJdbc import mySqlJdbc
 
 ua = UserAgent()
 header = {

@@ -23,8 +23,8 @@ class mySqlJdbc:
         )
         self.cursor = self.conn.cursor()
 
-    def rmDataId(self,id,dataBD):
-        self.sql = "DELETE FROM {} WHERE id = {};".format(dataBD,id)
+    def rmDataId(self, id, dataBD):
+        self.sql = "DELETE FROM {} WHERE id = {};".format(dataBD, id)
         print(self.sql)
         self.cursor.execute(self.sql)
         self.conn.commit()
@@ -70,6 +70,12 @@ class mySqlJdbc:
         self.cursor.execute(sql)
         self.conn.commit()
 
+    def inIdSearch(self, IdSearch, dataBD):
+        sql = "INSERT INTO {} (name,IdSearch,isOrNo) VALUES('{}',{})".format(dataBD, id, 0)
+        print(sql)
+        self.cursor.execute(sql)
+        self.conn.commit()
+
     def getLbUrl(self, dataBD):
         self.sql = "SELECT id,Url FROM {} WHERE isOrNo = 0".format(dataBD)
         self.cursor.execute(self.sql)
@@ -77,8 +83,15 @@ class mySqlJdbc:
         return self.results
 
     # 获取对应数据表中存在的URL的个数
-    def getIsOrNo(self, url, dataBD):
+    def getUrlGs(self, url, dataBD):
         self.sql = "SELECT * FROM {} WHERE Url = '{}';".format(dataBD, url)
+        self.cursor.execute(self.sql)
+        self.results = self.cursor.fetchall()
+        return len(self.results)
+
+    # 获取对应数据表中存在的sj的个数
+    def getSjGs(self, sj, dataBD):
+        self.sql = "SELECT * FROM {} WHERE sj = '{}';".format(dataBD, sj)
         self.cursor.execute(self.sql)
         self.results = self.cursor.fetchall()
         return len(self.results)

@@ -149,7 +149,7 @@ if __name__ == '__main__':
         selector = etree.HTML(HtmlLB)
         xqymURlList = set(selector.xpath("//div[@class='compnay-list']/div/h3/a/@href"))
         for pathurl in xqymURlList:
-            isOrNo = jdbc.getIsOrNo(pathurl, dataBD)
+            isOrNo = jdbc.getUrlGs(pathurl, dataBD)
             if isOrNo < 1:
                 getXQ(pathurl)
             else:

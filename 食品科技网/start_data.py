@@ -114,7 +114,7 @@ def get_lb(url):
     for url_xq in url_lb_list:
         if url_xq.get().find("http") > -1:
             url_xq_get = url_xq.get()
-            isOrNo = jdbc.getIsOrNo(url=url_xq_get, dataBD="tech_food_data")
+            isOrNo = jdbc.getUrlGs(url=url_xq_get, dataBD="tech_food_data")
             if isOrNo < 1:
                 get_xq(url_xq_get)
     xyy = get_xyy_url(html_lb)

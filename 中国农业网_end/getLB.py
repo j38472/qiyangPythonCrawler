@@ -11,7 +11,7 @@
 import requests
 from lxml import etree
 
-from 中国农业网.mySqlJdbc import inSearch
+from 中国农业网_end.mySqlJdbc import inSearch
 
 url = "http://user.zgny.com.cn/"
 xpathLbUrl = "//div[@class='FeiLei']/a[@class='FeiLei_01']/@href"

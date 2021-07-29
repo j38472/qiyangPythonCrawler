@@ -22,7 +22,7 @@ from myJDBC.jdbc import mySqlJdbc
 
 """
 
-马可波罗   页面结构有点复杂
+马可波罗_end   页面结构有点复杂
 
 https://www.chyxx.com/minglu/410000/list_2.html    不用写  之前的数据  就有了
 

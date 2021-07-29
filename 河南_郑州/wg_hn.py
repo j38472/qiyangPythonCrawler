@@ -97,6 +97,7 @@ def sj_hg():
         if noOrYes:
             # sj = hn_sj[2]
             sj_list.append(hn_sj[2])
+    print("开始生成    文件")
     ioTool.outXlsx(data=sj_list, dataFile="F:\\xexlsa\\hn.xlsx")
 
 
