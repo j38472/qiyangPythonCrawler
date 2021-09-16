@@ -73,6 +73,8 @@ def getData(url):
 
 if __name__ == '__main__':
 
+    print("%C1%AC%D2%C2%C8%B9")
+    exit()
     url_from = "http://www.gucn.com/Service_CurioShop_MoreList.asp?CurrentBoardId=0&Search_ShopName=&Search_ShopUserName=&Search_ShopSellingItem=&Search_ShopArea=&Search_ShopClassID=&ShowPageSize=30&ShopLevel={}&page={}"
 
     ShopLevelList = [0, 1, 2, 3]

@@ -14,9 +14,9 @@
 import base64
 import re
 import time
-from xml.dom.minidom import parse
-
 import requests
+
+from xml.dom.minidom import parse
 from fake_useragent import UserAgent
 from fontTools.ttLib import TTFont
 from lxml import etree
@@ -39,7 +39,6 @@ def saveWoffXml(result):
     fonts = TTFont(nameWoff)
     # 生成xml文件
     fonts.saveXML(nameXml)  # 保存成xml 文件
-    pass
 
 
 """

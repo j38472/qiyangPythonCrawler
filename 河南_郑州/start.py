@@ -35,7 +35,7 @@ jdbc = mySqlJdbc()
 tool = MyToolUtil()
 ioTool = MyIoToolUtil()
 
-dataDb = "hnsj_data_copy4"
+dataDb = "hnsj_data_copy4_51_sole_2"
 
 xlsx1 = "F:\\xexlsa\\zj\\two.xlsx"
 xlsx2 = "F:\\xexlsa\\zj\\set_sj_all.xlsx"
@@ -60,8 +60,8 @@ def qxTwoSj_all():
 
 
 if __name__ == '__main__':
-    qxTwoSj_all()
-    exit()
+    # qxTwoSj_all()
+    # exit()
 
     hn_sj_list = jdbc.get_BD_Data(dataDb)
     set_sj = set()
@@ -69,4 +69,4 @@ if __name__ == '__main__':
         sj = tool.getsjCall(hn_sj[2])
         set_sj.add(sj)
     print(len(set_sj))
-    ioTool.outXlsx(set_sj, "G:\\two.xlsx")
+    ioTool.outXlsx(set_sj, "F:\\xexlsa\\hnsj_data_copy4_51_sole_2.xlsx")

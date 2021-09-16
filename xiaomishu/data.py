@@ -10,6 +10,8 @@
 import re
 from time import sleep
 
+import selenium
+
 import requests
 from fake_useragent import UserAgent
 from lxml import etree
@@ -24,7 +26,7 @@ header = {
 
 proxiesNone = {
     "http": None,
-    "https": None
+    "https": None,
 }
 
 jdbc = mySqlJdbc()
@@ -52,7 +54,6 @@ def get_xq(url, name):
     dhOrSj_list = sel.xpath(dhOrSj_list_xpath)
     zy_list = sel.xpath(zy_list_xpath)
 
-
     dz = ""
     dhOrSj = ""
     zy = ""
@@ -74,11 +75,11 @@ def get_xq(url, name):
     # print(dz)
     # print(dhOrSj)
     # print("<>"*40)
-    jdbc.inXqDate(name=name,url=url,zy=zy,lxr="",dh=dhOrSj,sj=dhOrSj,dz=dz,dataBD=data_data)
-
+    jdbc.inXqDate(name=name, url=url, zy=zy, lxr="", dh=dhOrSj, sj=dhOrSj, dz=dz, dataBD=data_data)
 
 
 def get_lb_url(url, url_t):
+    print(url,"      ",url_t)
     sel = getHtmlSel(url=url)
     xq_href_list = sel.xpath("//ul/li/div/h4[@class='pb5']/a/@href")
     xq_name_list = sel.xpath("//ul/li/div/h4[@class='pb5']/a/text()")
@@ -96,7 +97,8 @@ def get_lb_url(url, url_t):
 if __name__ == '__main__':
     # url = "http://chongqing.xiaomishu.com/shop/search-rCQ_TN/"
 
-
+    get_lb_url(url="http://www.xiaomishu.com/shop/search",url_t = "http://www.xiaomishu.com/")
+    exit()
 
     search_list = jdbc.getLbUrl(dataBD=data_search)
     for search in search_list:
@@ -108,8 +110,8 @@ if __name__ == '__main__':
         # print("<><>"*21)
 
         url_t = re.search(r"http://(.*?)com/", url, flags=re.S).group(0)
-        # print(url_t)
-        # print(url)
+        print(url_t)
+        print(url)
         # print("<><>"*21)
 
         get_lb_url(url, url_t)

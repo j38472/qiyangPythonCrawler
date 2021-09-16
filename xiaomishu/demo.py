@@ -43,27 +43,24 @@ def getbjsearch():
     xzq_url_xpath = "//div[@class='dot pt10 pb5 pl10']/a[@class='g3']/@href"
     xzq_name_xpath = "//div[@class='dot pt10 pb5 pl10']/a[@class='g3']/text()"
     selector = etree.HTML(getHtml(urlbj))
+
     xzq_url_list = selector.xpath(xzq_url_xpath)
     xzq_name_list = selector.xpath(xzq_name_xpath)
 
-    for xzq_url,xzq_name in zip(xzq_url_list,xzq_name_list):
-        jdbc.inSearch(url=url_t+xzq_url,name="北京"+xzq_name,dataBD=dataDb)
-        selector_ = etree.HTML(getHtml(url_t+xzq_url))
+    for xzq_url, xzq_name in zip(xzq_url_list, xzq_name_list):
+        jdbc.inSearch(url=url_t + xzq_url, name="北京" + xzq_name, dataBD=dataDb)
+        selector_ = etree.HTML(getHtml(url_t + xzq_url))
         name_list = selector_.xpath("//dd/a[@class='res_sch_link_a']/text()")
-        href_list =selector_.xpath("//dd/a[@class='res_sch_link_a']/@href")
+        href_list = selector_.xpath("//dd/a[@class='res_sch_link_a']/@href")
 
-        for name,href in  zip(name_list,href_list):
-            jdbc.inSearch(url=url_t+href, name="北京"+xzq_name+name, dataBD=dataDb)
+        for name, href in zip(name_list, href_list):
+            jdbc.inSearch(url=url_t + href, name="北京" + xzq_name + name, dataBD=dataDb)
 
 
 if __name__ == '__main__':
     # urlc = "http://chengdu.xiaomishu.com/"
     # getHtml(urlc)
     # exit()
-
-
-
-
 
     getbjsearch()
     exit()
@@ -81,7 +78,6 @@ if __name__ == '__main__':
     dq_href_list_one = selector.xpath(dq_href_xpath_one)
     dq_name_list_one = selector.xpath(dq_name_xpath_one)
 
-
     dq_href_list_two = selector.xpath(dq_href_xpath_two)
     dq_name_list_two = selector.xpath(dq_name_xpath_two)
     print(dq_href_list_two)
@@ -90,8 +86,8 @@ if __name__ == '__main__':
     xq_href_xpath = "//div[1]/div/span/a/@href"
     xq_name_xpath = "//div[1]/div/span/a/text()"
 
-    for href_one,name_one in zip(dq_href_list_one,dq_name_list_one):
-        if name_one=="北京":
+    for href_one, name_one in zip(dq_href_list_one, dq_name_list_one):
+        if name_one == "北京":
             print(href_one)
             print(name_one)
             # xq_selector = etree.HTML(getHtml(href_one))

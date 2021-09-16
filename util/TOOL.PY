@@ -66,8 +66,9 @@ class MyToolUtil:
             # exit()
             return set(result)
         except Exception as e:
-            print("getSjAllList          ",e)
-    def getReStrAllList(self,ReStr, data):
+            print("getSjAllList          ", e)
+
+    def getReStrAllList(self, ReStr, data):
         """
         正则表达式直接匹配整个 页面 ,获取所有 "\D(1[0-9]{10})\D" 并返回set
         :param data:
@@ -80,20 +81,20 @@ class MyToolUtil:
             # exit()
             return set(result)
         except Exception as e:
-            print("getSjAllList          ",e)
+            print("getSjAllList          ", e)
 
-    def getReData(self,ReStr, data):
+    def getReData(self, ReStr, data):
         # print(data)
         try:
             result = re.search(ReStr, data, flags=re.S).group(1)
             return result
         except Exception as e:
-            print("getReData          ",e)
+            print("getReData          ", e)
 
-    def getReData0(self,ReStr, data):
+    def getReData0(self, ReStr, data):
         # print(data)
         try:
             result = re.search(ReStr, data, flags=re.S).group(0)
             return result
         except Exception as e:
-            print("getReData          ",e)
+            print("getReData          ", e)

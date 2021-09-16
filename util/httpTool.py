@@ -33,7 +33,6 @@ class MyHttpToolUtil:
 
     def getSele_one_none(self, url):
         try:
-
             req = requests.get(url=url, headers=header, proxies=proxiesNone, timeout=3, verify=False)
             # print(req.text)
             # exit()

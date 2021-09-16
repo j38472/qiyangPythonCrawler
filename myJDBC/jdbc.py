@@ -23,6 +23,12 @@ class mySqlJdbc:
         )
         self.cursor = self.conn.cursor()
 
+    def in_dqname(self, dataBD, name_address):
+        self.sql = "INSERT INTO {} (name_address,cs_count) VALUES('{}',0)".format(dataBD, name_address)
+        print(self.sql)
+        self.cursor.execute(self.sql)
+        self.conn.commit()
+
     def rmDataId(self, id, dataBD):
         self.sql = "DELETE FROM {} WHERE id = {};".format(dataBD, id)
         print(self.sql)
@@ -62,7 +68,6 @@ class mySqlJdbc:
         print(self.sql)
         self.cursor.execute(self.sql)
         self.conn.commit()
-        pass
 
     def inSearch(self, url, name, dataBD):
         sql = "INSERT INTO {} (name,url,isOrNo) VALUES('{}','{}',{})".format(dataBD, name, url, 0)
@@ -107,3 +112,21 @@ class mySqlJdbc:
         self.cursor.execute(self.sql)
         self.results = self.cursor.fetchall()
         return self.results
+
+    def get_BD_Data_xims(self, dataBD):
+        self.sql = "SELECT * FROM {} WHERE ID < 13657;".format(dataBD)
+        self.cursor.execute(self.sql)
+        self.results = self.cursor.fetchall()
+        return self.results
+
+    def updata_zzDQName(self, count, idS):
+        """
+
+        :param count: 本郑州地区送搜索词的  价值码
+        :param idS: 搜索词ID
+        :return:
+        """
+        self.sql = "UPDATE zz_dqname SET cs_count={} WHERE id = {}".format(count, idS)
+        print(self.sql)
+        self.cursor.execute(self.sql)
+        self.conn.commit()
