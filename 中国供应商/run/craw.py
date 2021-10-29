@@ -245,10 +245,10 @@ def start(url):
         # print("zy  主营  ",zy)
         myJDBC.addDate(dataDb="cn_china_cn", name=name, lxr=lxr, dh=dh, sj=sj, zy=zy, dz=dz, url=url)
         print("--------------------------------------------------------------")
-        if name == "" and lxr == "" and dh == "" and sj == "" and dz == "" and zy == "":
-            print("全都是空，更换ip")
-            myIP.rep_Ip()
-            myIP.get_proxies()
+        # if name == "" and lxr == "" and dh == "" and sj == "" and dz == "" and zy == "":
+        #     print("全都是空，更换ip")
+        #     myIP.rep_Ip()
+        #     myIP.get_proxies()
 
 
 # 这个主要用于测试的   {'http': 'http://183.155.109.40:59603'}

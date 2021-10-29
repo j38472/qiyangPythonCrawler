@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 '''=================================================
-@Project -> File   ：qiyangPythonCrawler -> start
+@Project -> File   ：qiyangPythonCrawler -> two
 @IDE    ：PyCharm
 @Author ：Mr. cyh
-@Date   ：2021-09-15 9:15
+@Date   ：2021-09-28 10:21
 @Desc   ：
 =================================================='''
 
@@ -19,8 +19,8 @@ from myJDBC.jdbc import mySqlJdbc
 
 jdbc = mySqlJdbc()
 
-dataBD_name = "map_baidu_data1"
-dataBD_addrssName = "zz_dqname"
+dataBD_name = "map_baidu_data"
+
 
 def bdMapSearch(driver, keys):
     try:
@@ -31,6 +31,7 @@ def bdMapSearch(driver, keys):
         driver.find_element_by_xpath("//button[@id='search-button']").click()
     except Exception as e:
         pass
+
 
 def jxJsonWb(json_content):
     for json_data in json_content:
@@ -67,6 +68,7 @@ def jxJsonWb(json_content):
                 addrs = addrs.replace("'", "")
                 jdbc.inXqDate(name=name, url="", zy="", lxr="", dh="", sj=sjdh, dz=addrs, dataBD=dataBD_name)
 
+
 def getContentText(proxy):
     try:
         count_json_text_len = 1
@@ -96,7 +98,7 @@ def getContentText(proxy):
     except Exception as e:
         pass
 
-def start_sss(addr_datas):
+if __name__ == '__main__':
     # dictProt = {'port': 5678}D
     server = Server(r"D:\driver\browsermob-proxy-2.1.4\bin\browsermob-proxy.bat")
     server.start()
@@ -110,67 +112,44 @@ def start_sss(addr_datas):
 
     driver.get(url="https://map.baidu.com/")
 
-    # time.sleep(3)
-    # exit()
-    # c = []
-    # print(c[2])
+    kw ='政府机构'
 
-    # addr_datas = jdbc.get_BD_Data(dataBD_addrssName)
-    count = 0
-    wd_one_s = [
-                # '美食',
-                # '餐厅',
-                # '饭店',
-                # '中餐厅',
-                # '西餐厅',
-                # '甜品冷饮',
-                # '快餐',
-                # '日韩料理',
-    ]
-    count_js_close = 0
-    cs_count_sql = 1
-    for addr_data in addr_datas:
-        time.sleep(0.8)
+    # addrs = ['郑州', '开封', '洛阳', '平顶山', '安阳', '鹤壁', '新乡','信阳',
+    # '焦作', '濮阳', '许昌', '漯河', '三门峡', '卧龙', '商丘', '周口', '驻马店',
+    #
+    # '新郑市', '新密市', '登封市', '荥阳市', '巩义市', '偃师市', '舞钢市', '汝州市', '林州市', '卫辉市', '辉县市', '沁阳市', '孟州市', '禹州市', '长葛市', '义马市', '灵宝市', '永城市', '项城市', '邓州市', '济源市']
+    addrs = [
+
+                # '涧西区','西工区','老城区','瀍河回族区','偃师区','新安县','孟津区','洛宁县','嵩县','栾川县','汝阳县','伊川县',
+                # '叶县','郏县','宝丰县','鲁山县','新华区','卫东区','湛河区','石龙区','新城区','高新区','舞钢市','汝州市','林州市','林州市','安阳县','内黄县','汤阴县','滑县','文峰区','北关区','殷都区','龙安区','安阳新区',
+
+
+        #      '浚县','淇县','淇滨区','山城区','鹤山区','卫滨区','红旗区','牧野区','凤泉区','辉县市','卫辉市','长垣市','新乡县','获嘉县','原阳县','延津县','封丘县',
+        # '解放区','山阳区','中站区','马村区','沁阳市','孟州市','修武县','武陟县','博爱','温县',
+        # '浉河区', '平桥区', '潢川县', '光山县', '息县', '新县', '罗山县', '商城县', '淮滨县', '固始县',
+        # '濮阳县', '清丰县', '南乐县', '范县', '台前县',
+
+
+
+
+
+        '源汇区', '郾城区', '召陵区', '舞阳县', '临颍县',
+        '湖滨区','陕州区','灵宝市','义马市','卢氏县','渑池县',
+        '宛城区', '卧龙区，邓州市', '南召县', '镇平县', '内乡县', '淅川县', '新野县', '唐河县', '桐柏县', '方城县', '西峡县', '社旗县',
+        '夏邑县', '虞城县', '柘城县', '宁陵县', '睢县', '民权县', '梁园区', '睢阳区',
+        '川汇区', '淮阳区', '项城市', '扶沟县', '西华县', '商水县', '沈丘县', '郸城县', '太康县', '鹿邑县',
+             '魏都','建安','禹州','长葛','鄢陵','襄城',
+        # '','','','','','','','','','','','','','','','','','','','','','',
+        #      # '','','','','','','','','','','','','','','','','','','','','','','','','','','','',
+
+
+
+             ]
+
+    for add in addrs:
+        time.sleep(1.2)
 
         proxy.new_har("my_baidu", options={'captureHeaders': True, 'captureContent': True})
-
-        # print(addr)
-        addr = addr_data[1]
-        id = addr_data[0]
-
-        start_time = time.time()
-
-        for wd in wd_one_s:
-            print("郑州" + addr + wd)
-            wordpass = "郑州" + addr + wd
-
-            time.sleep(1.2)
-            bdMapSearch(driver, wordpass)
-            time.sleep(3.2)
-
-            cs_count_sql += getContentText(proxy)
-
-            time.sleep(1.6)
-
-            count += 1
-        end_time = time.time()
-        print("本次关键词用时:::::::::: ", end_time - start_time)
-        jdbc.updata_zzDQName(count=cs_count_sql, idS=id)
-        count_js_close += 1
-
-    print("郑州一共的搜索词有   ", count, "  个  ")
-
-
-if __name__ == '__main__':
-    addrssName5_6q = jdbc.getData_startID_endID(dataBD_addrssName, 5000, 6000)
-    addrssName8_9q = jdbc.getData_startID_endID(dataBD_addrssName, 8000, 9000)
-
-    # print(len(addrssName5_6q))
-    # print(len(addrssName8_9q))
-    # exit()
-
-    time.sleep(1.2)
-    start_sss(addrssName5_6q)
-
-    time.sleep(1.2)
-    start_sss(addrssName8_9q)
+        bdMapSearch(driver, add+kw)
+        time.sleep(3.2)
+        getContentText(proxy)

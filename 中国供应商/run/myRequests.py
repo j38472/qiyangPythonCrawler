@@ -16,7 +16,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.exceptions import ProxyError
 
 from 中国供应商.run import myIP, myJDBC
-from fake_useragent import UserAgent
+# from fake_useragent import UserAgent
 
 from 中国供应商.run.myIP import que_Ip
 from requests.exceptions import ConnectionError
@@ -27,7 +27,7 @@ proxiesNone = {
     "http": None,
     "https": None
 }
-ua = UserAgent()
+# ua = UserAgent()
 header = {
     # "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
     # "Accept-Encoding": "gzip, deflate",
@@ -40,22 +40,24 @@ header = {
     # "referer": "https://www.china.cn/",
     # "sec-fetch-user": "?1",
     # "upgrade-insecure-requests": "1",
-#     Hm_lvt_60030dce41abe35fdcca4338a88126a7=1616742365; china_uv=159cf539ae72f5b08c378bc3f21dcb29
-#     "cookie": "Hm_lvt_60030dce41abe35fdcca4338a88126a7=1616742365; china_uv=159cf539ae72f5b08c378bc3f21dcb29",
-    'User-Agent': ua.random,
+    #     Hm_lvt_60030dce41abe35fdcca4338a88126a7=1616742365; china_uv=159cf539ae72f5b08c378bc3f21dcb29
+    #     "cookie": "Hm_lvt_60030dce41abe35fdcca4338a88126a7=1616742365; china_uv=159cf539ae72f5b08c378bc3f21dcb29",
+    'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36",
 }
 cont = 0
+
+
 def getHtmlData(url):
     global cont
     # print("当前页面的URL  ",url)
-    html="0"
-    pmeta = myJDBC.getSqlProxyMeta()
-    proxyMeta = pmeta[0][0]
-    proxies = {
-        # 根据请求方式（http/https）的不同，可以选择不同的代理
-        # "http": proxyMeta,
-        "https": proxyMeta
-    }
+    # html="0"
+    # pmeta = myJDBC.getSqlProxyMeta()
+    # proxyMeta = pmeta[0][0]
+    # proxies = {
+    #     # 根据请求方式（http/https）的不同，可以选择不同的代理
+    #     # "http": proxyMeta,
+    #     "https": proxyMeta
+    # }
 
     # {'http': 'http://183.155.111.253:46264'}
     # , proxies=proxies
@@ -72,45 +74,34 @@ def getHtmlData(url):
     # s.mount('https://', HTTPAdapter(max_retries=3))
 
     try:
-        res = requests.get(url=url, proxies=proxies,headers=header, timeout=5)
+        res = requests.get(url=url, headers=header, timeout=5)
         res.encoding = 'gbk'
         code = res.status_code
         html = "111111111111"
         html = res.text
         # print("html::",html)
         global cont
-        print("当前请求页面的ip：：    ", proxies,"           ","状态码为:: ", code)
+        print("           ", "状态码为:: ", code)
         # print(html)
 
-
-        if code!=200 and cont < 3:
+        if code != 200 and cont < 3:
             print("封IP了啊啊啊啊啊啊")
             cont += 1
-           # 更新资源
-           #  requests.post(url="https://proxy.qg.net/replace?Key=F58B5B03A518E080", proxies=proxiesNone)
+            # 更新资源
+            #  requests.post(url="https://proxy.qg.net/replace?Key=F58B5B03A518E080", proxies=proxiesNone)
             myIP.rep_Ip()
             myIP.get_proxies()
             sleep(6)
             getHtmlData(url)
 
     except Exception as ce:
-        if (isinstance(ce.args[0], MaxRetryError) and
-            isinstance(ce.args[0].reason, urllib3_ProxyError)):
-            # oops, requests should have handled this, but didn't.
-            # see https://github.com/kennethreitz/requests/issues/3050
-            print("Error")
-            myIP.rep_Ip()
-            myIP.get_proxies()
-            print("Error")
-            # getHtmlData(url)
-
+        print("Exception")
 
     # proxies = {"http": None, "https": None}
     # resp = requests.get(url=url,proxies=proxies)
     # if len(html) < 3 :
     #     getHtmlData(url)
     return html
-
 
 
 def getIPIS(url):
@@ -140,6 +131,7 @@ def getIPIS(url):
     print("-------------------------")
     print(resp.status_code)
     print(resp.text)
+
 
 if __name__ == '__main__':
     # myIP.rep_Ip()

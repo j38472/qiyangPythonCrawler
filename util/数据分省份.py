@@ -167,6 +167,8 @@ sf_lv = {
 }
 
 
+exit()
+
 def runHQList(sj_data_jg_list):
     for data in sj_data_jg_list:
         dz = data[7]

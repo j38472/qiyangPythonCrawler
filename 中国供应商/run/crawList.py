@@ -10,7 +10,7 @@
 =================================================='''
 #
 import re
-from datetime import time,datetime
+from datetime import time, datetime
 
 import requests
 from lxml import etree
@@ -26,23 +26,24 @@ xpathLS = "//div[@class='location_an']/span[@class='fr']/span/text()"
 
 coent = 0
 
-
 booIp = False
-DAY_START = time(2,00)
-DAY_END = time(2,5)
+DAY_START = time(2, 00)
+DAY_END = time(2, 5)
 proxiesNone = {
     "http": None,
     "https": None
 }
+
+
 def setQGIp():
     pass
     global booIp
     current_time = datetime.now().time()
-    if DAY_START < current_time <DAY_END and booIp:
+    if DAY_START < current_time < DAY_END and booIp:
         pass
         booIp = False
         urlGetIP = "https://httpbin.org/ip"
-        ipText = requests.get(url=urlGetIP,proxies=proxiesNone).text
+        ipText = requests.get(url=urlGetIP, proxies=proxiesNone).text
         ipTextEval = eval(ipText)
         ip = ipTextEval['origin']
         ipIsOrNo = getQGIp(ip)
@@ -51,9 +52,10 @@ def setQGIp():
             requests.post(url=setIP, proxies=proxiesNone)
             print("青果白名单ip添加成功")
             inQGIp(ip)
-    if current_time < DAY_START and booIp ==False:
+    if current_time < DAY_START and booIp == False:
         pass
         booIp = True
+
 
 def getListData(url, cont):
     global coent
@@ -79,7 +81,7 @@ def getListData(url, cont):
             if cont <= 1:
                 print("列表页URL 其他列表页的URL 需要去重 存入search_copy1中的 ,len(urlLbList)去重前的URL  共有条数 ", len(urlLbList))
                 urlLbSet = set(urlLbList)
-                myJDBC.insGJ(urlLbSet, "search_copy1")
+                # myJDBC.insGJ(urlLbSet, "search_copy1")
             # 解析该页面 获取详情页的链接  并调用 craw   修改为从公司名字处获取 直接进入公司的主页面   联系方式URL 后缀需要拼接 /contact-information/   这个页面比较规范
             xpathXQUrl = "//ul[@class='extension_ul']/li/div[@class='extension_right']/p[1]/a/@href"
             XQUrlList = selector.xpath(xpathXQUrl)
@@ -92,22 +94,22 @@ def getListData(url, cont):
                 # 爬取详情页信息
                 i = getUrlIsOrNo(sqUrl)
                 # 判断当前是否要向青果添加ip白名单
-                setQGIp()
-                if i<1:
-                    print("个数 i：： ",i)
+                # setQGIp()
+                if i < 1:
+                    print("个数 i：： ", i)
 
                     craw.start(sqUrl)
 
                 else:
                     pass
                     # print("已经有这个URL的数据了,个数 i：： ",i)
-            if coent!=0 and coent % 20 == 0:
-                print("（20次打印一下）当前详情页计数器： ", coent)
-
-            if coent!=0 and coent % 80 == 0:
-                print("当前详情页页计数器： ", coent)
-                myIP.rep_Ip()
-                myIP.get_proxies()
+            # if coent != 0 and coent % 20 == 0:
+            #     print("（20次打印一下）当前详情页计数器： ", coent)
+            #
+            # if coent != 0 and coent % 80 == 0:
+            #     print("当前详情页页计数器： ", coent)
+            #     myIP.rep_Ip()
+            #     myIP.get_proxies()
 
             #    判断是不是有下一页
             xpathNext = "//a[@class='rollPage']/@href"
@@ -139,6 +141,27 @@ def getListData(url, cont):
 # {'http': 'http://114.231.104.192:21504'}
 
 if __name__ == '__main__':
+    """
+    https://www.china.cn/search/fhealh.shtml
+    https://www.china.cn/search/rrf8a.shtml
+    https://www.china.cn/search/mzyh2v.shtml
+    https://www.china.cn/search/fi1h9p.shtml
+    https://www.china.cn/search/3t8rx.shtml
+    https://www.china.cn/search/3rbb4pe.shtml
+    """
+    urls = [
+        # "https://www.china.cn/search/fhealh.shtml",
+        "https://www.china.cn/search/rrf8a.shtml",
+        "https://www.china.cn/search/mzyh2v.shtml",
+        "https://www.china.cn/search/fi1h9p.shtml",
+        "https://www.china.cn/search/3t8rx.shtml",
+        "https://www.china.cn/search/3rbb4pe.shtml"
+    ]
+    for url in urls:
+        getListData(url, 0)
+
+    exit()
+
     # 每次开始  列表页的计数器就从零开始
     myIP.rep_Ip()
     myIP.get_proxies()

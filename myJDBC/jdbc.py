@@ -47,7 +47,6 @@ class mySqlJdbc:
         print(self.sql)
         self.cursor.execute(self.sql)
         self.conn.commit()
-        pass
 
     def setSearchUrl(self, id, url, dataBD):
         self.sql = "UPDATE {} SET url = '{}' WHERE  id = {}".format(dataBD, url, id)
@@ -57,6 +56,11 @@ class mySqlJdbc:
 
     def setDataSj(self, id, sj, dataBD):
         self.sql = "UPDATE {} SET sj = '{}' WHERE  id = {}".format(dataBD, sj, id)
+        print(self.sql)
+        self.cursor.execute(self.sql)
+        self.conn.commit()
+    def setDataSjDh(self, id, dh ,sj, dataBD):
+        self.sql = "UPDATE {} SET sj = '{}' ,dh = '{}'WHERE  id = {}".format(dataBD, sj,dh, id)
         print(self.sql)
         self.cursor.execute(self.sql)
         self.conn.commit()
@@ -76,7 +80,7 @@ class mySqlJdbc:
         self.conn.commit()
 
     def inIdSearch(self, IdSearch, dataBD):
-        sql = "INSERT INTO {} (name,IdSearch,isOrNo) VALUES('{}',{})".format(dataBD, id, 0)
+        sql = "INSERT INTO {} (name,IdSearch,isOrNo) VALUES('{}',{})".format(dataBD, IdSearch, 0)
         print(sql)
         self.cursor.execute(sql)
         self.conn.commit()
@@ -119,9 +123,21 @@ class mySqlJdbc:
         self.results = self.cursor.fetchall()
         return self.results
 
+    def getData_startID_endID(self, dataBD, startId, endId):
+        """
+        获取数据库信息   获取两个索引中间的数据  包头不包尾
+        :param dataBD: 表名
+        :param startId: 起始坐标 包含该坐标的数据
+        :param endId: 结束坐标
+        :return: 返回获取的坐标间数据集
+        """
+        self.sql = "SELECT * FROM {} WHERE {} <= ID AND  {} > ID;".format(dataBD, startId, endId)
+        self.cursor.execute(self.sql)
+        self.results = self.cursor.fetchall()
+        return self.results
+
     def updata_zzDQName(self, count, idS):
         """
-
         :param count: 本郑州地区送搜索词的  价值码
         :param idS: 搜索词ID
         :return:
